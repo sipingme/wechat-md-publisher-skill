@@ -1,6 +1,6 @@
 # WeChat MD Publisher - OpenClaw Skill
 
-将 Markdown 文章发布到微信公众号的 OpenClaw Skill。
+> 全功能微信公众号 Markdown 发布工具 - OpenClaw Skill 版本
 
 ## 🚀 快速安装
 
@@ -13,15 +13,15 @@ openclaw skills install wechat-md-publisher
 ### 方法 2：从 GitHub 安装
 
 ```bash
-openclaw skills install https://github.com/sipingme/wechat-md-publisher/tree/main/openclaw-skill
+openclaw skills install https://github.com/sipingme/wechat-md-publisher-skill
 ```
 
 ### 方法 3：手动安装
 
 1. 克隆仓库：
 ```bash
-git clone https://github.com/sipingme/wechat-md-publisher.git
-cd wechat-md-publisher/openclaw-skill
+git clone https://github.com/sipingme/wechat-md-publisher-skill.git
+cd wechat-md-publisher-skill
 ```
 
 2. 复制到 OpenClaw skills 目录：
@@ -46,7 +46,7 @@ chmod +x scripts/publish.sh
 openclaw skills list --eligible
 
 # 查看 Skill 详情
-openclaw skills info wechat-publisher
+openclaw skills info wechat-md-publisher
 
 # 测试命令
 wechat-pub --version
