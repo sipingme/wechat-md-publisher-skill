@@ -134,9 +134,48 @@ openclaw run wechat-md-publisher publish article.md orangeheart
 wechat-pub publish create --file article.md --theme orangeheart
 ```
 
-## 📚 文档
+## � 与 news-to-markdown-skill 组合使用
 
-- **[SKILL.md](./SKILL.md)** - 完整的 SOP 和使用指南
+**推荐组合**：一键转载新闻到微信公众号
+
+### 快速示例
+
+```bash
+# 1. 提取新闻文章
+convert-url --url "https://www.toutiao.com/article/123" \
+  --output /tmp/article.md \
+  --platform toutiao
+
+# 2. 发布到微信公众号
+wechat-pub publish create \
+  --file /tmp/article.md \
+  --theme orangeheart
+```
+
+### AI 自动化工作流
+
+用户说：
+> "帮我把这篇头条文章转载到我的微信公众号"
+
+AI 自动执行：
+1. 使用 `news-to-markdown-skill` 提取文章
+2. 使用 `wechat-md-publisher-skill` 发布到微信
+3. 返回发布结果
+
+### 优势
+
+✅ **智能提取** - 自动识别正文，过滤广告  
+✅ **多平台支持** - 头条、微信、小红书  
+✅ **精美渲染** - 8+ 主题可选  
+✅ **一键发布** - 无需手动复制粘贴
+
+详见 [SKILL.md](./SKILL.md) 中的完整集成指南。
+
+---
+
+## �📚 文档
+
+- **[SKILL.md](./SKILL.md)** - 完整的 SOP 和使用指南（含 news-to-markdown 集成）
 - **[quick-start.md](./references/quick-start.md)** - 5 分钟快速上手
 - **[themes.md](./references/themes.md)** - 主题使用指南
 - **[ip-whitelist-guide.md](./references/ip-whitelist-guide.md)** - IP 白名单配置指南 ⚠️ 重要
@@ -219,7 +258,8 @@ wechat-pub account add --name "新账号" --app-id xxx --app-secret xxx
 - ❌ 不会收集用户信息
 - ✅ 所有通信仅限于微信官方 API
 - ✅ 配置文件仅存储在本地
-
+[news-to-markdown](https://github.com/sipingme/news-to-markdown) - 新闻提取核心库
+- 
 ### 安全检查
 
 ```bash
