@@ -22,6 +22,42 @@ repository: https://github.com/sipingme/wechat-md-publisher
 
 全功能微信公众号 Markdown 发布工具 - 让 AI 能够直接将内容发布到微信公众号。
 
+## ⚡ 快速开始
+
+### 安装
+
+```bash
+npm install -g wechat-md-publisher
+```
+
+### 配置账号
+
+```bash
+wechat-pub account add \
+  --name "我的公众号" \
+  --app-id "wx_your_app_id" \
+  --app-secret "your_app_secret" \
+  --default
+```
+
+### 发布文章
+
+```bash
+wechat-pub publish create \
+  --file article.md \
+  --theme orangeheart
+```
+
+### 与 news-to-markdown 配合使用
+
+```bash
+# 一键转载新闻到微信公众号
+convert-url --url "https://www.toutiao.com/article/123" --output /tmp/article.md
+wechat-pub publish create --file /tmp/article.md --theme orangeheart
+```
+
+---
+
 ## 🎯 何时使用此 Skill
 
 当用户需要以下操作时，应触发此 Skill：
