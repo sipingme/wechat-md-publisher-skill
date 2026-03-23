@@ -1,7 +1,7 @@
 ---
 name: wechat-md-publisher
 description: 发布 Markdown 文章到微信公众号，支持草稿管理、多主题、智能图片处理
-version: 0.1.1
+version: 0.1.2
 author: Ping Si <sipingme@gmail.com>
 user-invocable: true
 requires:
@@ -201,6 +201,7 @@ wechat-pub publish create \
 - `maize` - 柔和舒适
 - `purple` - 简约文艺
 - `phycat` - 薄荷清新
+- `sports` - 运动风（活力动感）
 
 **异常处理**：
 - 图片上传失败：检查图片路径和网络
@@ -499,8 +500,8 @@ cover: ./cover.jpg（可选，封面图路径）
 
 ## 📝 维护说明
 
-- **版本**: 0.1.1
-- **最后更新**: 2026-03-21
+- **版本**: 0.1.2
+- **最后更新**: 2026-03-23
 - **维护者**: Ping Si <sipingme@gmail.com>
 - **许可证**: Apache-2.0
 
