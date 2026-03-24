@@ -1,15 +1,15 @@
 ---
 name: wechat-md-publisher
-description: 发布 Markdown 文章到微信公众号，支持草稿管理、多主题、智能图片处理、自动封面图
-version: 0.1.8
+description: 发布 Markdown 文章到微信公众号，支持草稿管理、多主题、智能图片处理、自动封面图。推荐与 news-to-markdown-skill 配合使用实现一键转载。
+version: 0.1.9
 author: Ping Si <sipingme@gmail.com>
 user-invocable: true
 requires:
   - node: ">=18.0.0"
   - npm: ">=8.0.0"
   - env:
-      - WECHAT_APP_ID: "微信公众号 AppID（可选，也可通过命令配置）"
-      - WECHAT_APP_SECRET: "微信公众号 AppSecret（可选，也可通过命令配置）"
+      - WECHAT_APP_ID: "微信公众号 AppID（必需）"
+      - WECHAT_APP_SECRET: "微信公众号 AppSecret（必需）"
 tags:
   - wechat
   - publishing
@@ -21,6 +21,18 @@ repository: https://github.com/sipingme/wechat-md-publisher
 # WeChat Publisher Skill
 
 全功能微信公众号 Markdown 发布工具 - 让 AI 能够直接将内容发布到微信公众号。
+
+## ⚠️ 重要提示
+
+**推荐使用方式**：
+- ✅ **最佳实践**：与 `news-to-markdown-skill` 配合使用，实现一键转载新闻到微信公众号
+- 🌐 **固定公网 IP**：必须有固定公网 IP 并配置到微信公众平台的 IP 白名单
+- 🔑 **必需凭证**：必须配置 `WECHAT_APP_ID` 和 `WECHAT_APP_SECRET` 环境变量或通过命令行配置
+
+**关键要求**：
+1. **固定公网 IP**：微信 API 要求服务器 IP 在白名单中，动态 IP 无法使用
+2. **微信公众号凭证**：需要从微信公众平台获取 AppID 和 AppSecret
+3. **IP 白名单配置**：在微信公众平台「设置与开发」→「基本配置」→「IP 白名单」中添加你的公网 IP
 
 ## ⚡ 快速开始
 
@@ -508,7 +520,7 @@ cover: ./cover.jpg（可选，封面图路径）
 
 ## 📝 维护说明
 
-- **版本**: 0.1.8
+- **版本**: 0.1.9
 - **最后更新**: 2026-03-24
 - **维护者**: Ping Si <sipingme@gmail.com>
 - **许可证**: Apache-2.0
