@@ -1,7 +1,7 @@
 {
   "skill": {
     "name": "wechat-md-publisher",
-    "version": "0.1.9",
+    "version": "0.2.0",
     "enabled": true,
     "autoInvoke": true
   },
@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "npm": [
-      "wechat-md-publisher@^0.1.9"
+      "wechat-md-publisher@^0.2.0"
     ]
   },
   "permissions": {
