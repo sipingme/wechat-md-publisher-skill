@@ -1,7 +1,7 @@
 ---
 name: wechat-md-publisher
-description: 发布 Markdown 文章到微信公众号，支持草稿管理、多主题、智能图片处理
-version: 0.1.3
+description: 发布 Markdown 文章到微信公众号，支持草稿管理、多主题、智能图片处理、自动封面图
+version: 0.1.4
 author: Ping Si <sipingme@gmail.com>
 user-invocable: true
 requires:
@@ -52,9 +52,17 @@ wechat-pub publish create \
 
 ```bash
 # 一键转载新闻到微信公众号
+# news-to-markdown 会自动提取封面图（og:image 或第一张图片）
+# wechat-md-publisher 会自动使用提取的封面图
 convert-url --url "https://www.toutiao.com/article/123" --output /tmp/article.md
 wechat-pub publish create --file /tmp/article.md --theme orangeheart
 ```
+
+**封面图自动处理**：
+- news-to-markdown v1.2.0+ 自动提取最佳封面图
+- 优先级：og:image > twitter:image > 第一张图片
+- wechat-md-publisher 自动上传并使用封面图
+- 无需手动指定，完全自动化
 
 ---
 
