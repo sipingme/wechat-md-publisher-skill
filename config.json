@@ -1,7 +1,7 @@
 {
   "skill": {
     "name": "wechat-md-publisher",
-    "version": "0.6.0",
+    "version": "0.6.1",
     "enabled": true,
     "autoInvoke": true
   },
