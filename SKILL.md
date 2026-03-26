@@ -213,8 +213,6 @@ wechat-pub publish create \
 4. 向用户报告成功，并提供发布 ID
 
 **可用主题**：
-
-**本地精选主题**：
 - `default` - 简洁蓝调（v0.5.0 更新为蓝色配色）
 - `orangesun` - 橙色阳光（温暖明亮）
 - `redruby` - 红宝石（优雅醒目）
