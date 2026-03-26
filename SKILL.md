@@ -213,14 +213,12 @@ wechat-pub publish create \
 4. 向用户报告成功，并提供发布 ID
 
 **可用主题**：
-- `default` - 默认（简洁经典风格）
-- `orangesun` - 橙色阳光（温暖明亮）
-- `redruby` - 红宝石（优雅醒目）
-- `greenmint` - 绿薄荷（清新舒适）
-- `purplerain` - 紫色雨（梦幻柔和）
-- `blackink` - 黑墨水（深色模式，适合夜间阅读）
-
-> ⚠️ 注意：0.5.2 版本移除了损坏的旧主题（orangeheart, lapis, rainbow, phycat, pie, purple, maize），只保留与 CSS 文件匹配的主题。
+- `default` - 默认主题（简洁清爽）
+- `orangesun` - Orange Sun（温暖明亮）
+- `redruby` - Red Ruby（优雅醒目）
+- `greenmint` - Green Mint（清新舒适）
+- `purplerain` - Purple Rain（梦幻柔和）
+- `blackink` - Black Ink（深色模式）
 
 **异常处理**：
 - 图片上传失败：检查图片路径和网络
@@ -339,7 +337,7 @@ wechat-pub theme list
 ┌─────────────┬──────────────┬────────────────────┐
 │ ID          │ 名称         │ 描述               │
 ├─────────────┼──────────────┼────────────────────┤
-│ default     │ 默认         │ 简洁经典风格       │
+│ default     │ 默认主题     │ 简洁清爽风格       │
 │ orangesun   │ Orange Sun   │ 温暖明亮风格       │
 │ redruby     │ Red Ruby     │ 优雅醒目风格       │
 │ greenmint   │ Green Mint   │ 清新舒适风格       │
@@ -348,7 +346,6 @@ wechat-pub theme list
 └─────────────┴──────────────┴────────────────────┘
 ```
 
-> ⚠️ 注意：0.5.2 版本移除了损坏的旧主题，只保留与 CSS 文件匹配的主题。
 
 ---
 
