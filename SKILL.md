@@ -57,7 +57,7 @@ wechat-pub account add \
 ```bash
 wechat-pub publish create \
   --file article.md \
-  --theme orangeheart
+  --theme orangesun
 ```
 
 ### 与 news-to-markdown 配合使用
@@ -67,7 +67,7 @@ wechat-pub publish create \
 # news-to-markdown 会自动提取封面图（og:image 或第一张图片）
 # wechat-md-publisher 会自动使用提取的封面图
 convert-url --url "https://www.toutiao.com/article/123" --output /tmp/article.md
-wechat-pub publish create --file /tmp/article.md --theme orangeheart
+wechat-pub publish create --file /tmp/article.md --theme orangesun
 ```
 
 **封面图自动处理**：
@@ -195,7 +195,7 @@ EOF
 ```bash
 wechat-pub publish create \
   --file /tmp/article.md \
-  --theme orangeheart
+  --theme orangesun
 ```
 
 3. 解析输出，提取 `publish_id`
@@ -213,12 +213,14 @@ wechat-pub publish create \
 4. 向用户报告成功，并提供发布 ID
 
 **可用主题**：
-- `default` - 简洁蓝调（v0.5.0 更新为蓝色配色）
+- `default` - 默认（简洁经典风格）
 - `orangesun` - 橙色阳光（温暖明亮）
 - `redruby` - 红宝石（优雅醒目）
 - `greenmint` - 绿薄荷（清新舒适）
 - `purplerain` - 紫色雨（梦幻柔和）
 - `blackink` - 黑墨水（深色模式，适合夜间阅读）
+
+> ⚠️ 注意：0.5.2 版本移除了损坏的旧主题（orangeheart, lapis, rainbow, phycat, pie, purple, maize），只保留与 CSS 文件匹配的主题。
 
 **异常处理**：
 - 图片上传失败：检查图片路径和网络
@@ -239,7 +241,7 @@ wechat-pub publish create \
 ```bash
 wechat-pub draft create \
   --file /tmp/article.md \
-  --theme lapis
+  --theme default
 ```
 
 3. 记录返回的 `media_id`
@@ -338,10 +340,15 @@ wechat-pub theme list
 │ ID          │ 名称         │ 描述               │
 ├─────────────┼──────────────┼────────────────────┤
 │ default     │ 默认         │ 简洁经典风格       │
-│ orangeheart │ Orange Heart │ 温暖优雅风格       │
-│ lapis       │ Lapis        │ 清新极简风格       │
+│ orangesun   │ Orange Sun   │ 温暖明亮风格       │
+│ redruby     │ Red Ruby     │ 优雅醒目风格       │
+│ greenmint   │ Green Mint   │ 清新舒适风格       │
+│ purplerain  │ Purple Rain  │ 梦幻柔和风格       │
+│ blackink    │ Black Ink    │ 深色模式风格       │
 └─────────────┴──────────────┴────────────────────┘
 ```
+
+> ⚠️ 注意：0.5.2 版本移除了损坏的旧主题，只保留与 CSS 文件匹配的主题。
 
 ---
 
@@ -505,7 +512,7 @@ cover: ./cover.jpg（可选，封面图路径）
 
 **用户**：[提供内容]
 
-**AI**：收到！我将使用 orangeheart 主题发布。正在处理...
+**AI**：收到！我将使用 orangesun 主题发布。正在处理...
 
 [执行命令]
 
@@ -562,7 +569,7 @@ convert-url --url "https://www.toutiao.com/article/123" \
 # 步骤 2: 使用 wechat-md-publisher 发布到微信
 wechat-pub publish create \
   --file /tmp/article.md \
-  --theme orangeheart
+  --theme orangesun
 ```
 
 **场景 2：批量转载新闻**
@@ -581,7 +588,7 @@ for url in "${urls[@]}"; do
   convert-url --url "$url" --output "/tmp/$(basename $url).md"
   
   # 发布到微信（创建草稿）
-  wechat-pub draft create --file "/tmp/$(basename $url).md" --theme lapis
+  wechat-pub draft create --file "/tmp/$(basename $url).md" --theme default
   
   echo "✓ 已处理: $url"
 done
@@ -676,7 +683,7 @@ https://www.toutiao.com/article/7000000000000000000/
 ✅ **完成！**
 - 文章标题：《xxx》
 - 发布 ID: 2247483647_1
-- 使用主题: orangeheart
+- 使用主题: orangesun
 - 你可以在微信公众平台查看
 
 #### 相关资源
