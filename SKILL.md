@@ -1,7 +1,7 @@
 ---
 name: wechat-md-publisher
 description: 发布 Markdown 文章到微信公众号，支持草稿管理、多主题、智能图片处理、自动封面图。推荐与 news-to-markdown-skill 配合使用实现一键转载。
-version: 0.5.1
+version: 0.6.0
 author: Ping Si <sipingme@gmail.com>
 user-invocable: true
 requires:
@@ -88,6 +88,8 @@ wechat-pub publish create --file /tmp/article.md --theme orangesun
 - ✅ 查看已发布的文章列表
 - ✅ 删除草稿或已发布文章
 - ✅ 使用不同主题渲染 Markdown
+- ✅ 在文章开头/结尾添加固定图文（Wrapper 功能）
+- ✅ 查看或回滚 Wrapper 历史版本
 
 **触发关键词**：
 - "发布到微信公众号"
@@ -95,6 +97,8 @@ wechat-pub publish create --file /tmp/article.md --theme orangesun
 - "配置微信公众号"
 - "查看微信文章"
 - "使用 [主题名] 主题发布"
+- "文章开头结尾固定内容"
+- "Wrapper"
 
 ## 📋 前置要求
 
@@ -350,6 +354,50 @@ wechat-pub theme list
 ---
 
 ## 🔧 高级用法
+
+### Wrapper 功能：文章开头/结尾固定图文
+
+在发布文章时自动在开头和结尾添加固定的图文内容（如关注引导、底部二维码等）。
+
+**开启功能**：
+```bash
+wechat-pub wrapper on
+```
+
+**设置内容**：
+```bash
+wechat-pub wrapper set \
+  --header "<div>欢迎关注我们的公众号</div>" \
+  --footer "<div>觉得有帮助请点赞+收藏</div>"
+```
+
+**查看状态**：
+```bash
+wechat-pub wrapper status
+```
+
+**查看历史版本**：
+```bash
+wechat-pub wrapper history
+```
+
+**回滚到指定版本**：
+```bash
+wechat-pub wrapper rollback 1
+```
+
+**关闭功能**：
+```bash
+wechat-pub wrapper off
+```
+
+**注意事项**：
+- 功能默认关闭，需要手动开启
+- 每次 `set` 会创建新版本，支持历史回滚
+- 图片处理：目前直接存储原始 HTML，需要公网可访问的图片 URL
+- 数据库文件：`data/wmp.db`
+
+---
 
 ### 使用编程 API
 
