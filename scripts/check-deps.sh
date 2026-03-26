@@ -12,7 +12,7 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # 需要的版本（从 config.json 读取）
-REQUIRED_VERSION="0.3.5"
+REQUIRED_VERSION="0.3.6"
 
 echo -e "${BLUE}检查 wechat-md-publisher 依赖...${NC}"
 
