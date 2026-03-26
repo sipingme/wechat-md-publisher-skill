@@ -190,6 +190,7 @@ AI 自动执行：
 - `maize` - 柔和舒适
 - `purple` - 简约文艺
 - `phycat` - 薄荷清新
+- `sport` - 运动风 🏃 活力动感
 
 ## 🔧 高级配置
 
@@ -243,6 +244,45 @@ Token 会自动刷新，如仍有问题：
 wechat-pub account remove <account-id>
 wechat-pub account add --name "新账号" --app-id xxx --app-secret xxx
 ```
+
+### 问题 5：更新 Skill 后依赖未更新
+
+**✨ 自动更新（v0.2.2+）**
+
+从 v0.2.2 开始，skill 会在每次运行时**自动检查并更新依赖**：
+
+```bash
+# 直接使用，无需手动操作
+openclaw run wechat-md-publisher publish article.md
+
+# 输出示例：
+# 检查 wechat-md-publisher 依赖...
+# 当前版本: v0.3.1
+# 需要版本: v0.3.2
+# 正在更新...
+# ✓ 更新成功: v0.3.1 → v0.3.2
+```
+
+**手动更新（如果自动更新失败）**：
+
+```bash
+# 方法 1：强制重新安装（推荐）
+npm uninstall -g wechat-md-publisher
+npm install -g wechat-md-publisher@0.3.2
+
+# 方法 2：清除缓存后安装
+npm cache clean --force
+npm install -g wechat-md-publisher@latest
+
+# 验证版本
+wechat-pub --version  # 应显示 0.3.2
+```
+
+**工作原理**：
+- ✅ 每次运行时自动检查版本
+- ✅ 版本不匹配时自动更新
+- ✅ 无需用户手动干预
+- ✅ 失败时回退到手动提示
 
 ## 🔒 安全性
 

@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "npm": [
-      "wechat-md-publisher@^0.3.2"
+      "wechat-md-publisher@0.3.2"
     ]
   },
   "permissions": {
