@@ -1,7 +1,7 @@
 ---
 name: wechat-md-publisher
 description: 发布 Markdown 文章到微信公众号，支持草稿管理、多主题、智能图片处理、自动封面图。推荐与 news-to-markdown-skill 配合使用实现一键转载。
-version: 0.4.3
+version: 0.5.0
 author: Ping Si <sipingme@gmail.com>
 user-invocable: true
 requires:
@@ -213,15 +213,14 @@ wechat-pub publish create \
 4. 向用户报告成功，并提供发布 ID
 
 **可用主题**：
-- `default` - 简洁经典
-- `orangeheart` - 温暖优雅
-- `rainbow` - 活泼清爽
-- `lapis` - 清新极简
-- `pie` - 现代锐利
-- `maize` - 柔和舒适
-- `purple` - 简约文艺
-- `phycat` - 薄荷清新
-- `sports` - 运动风（活力动感，v0.2.4已修复微信渲染问题）
+
+**本地精选主题**：
+- `default` - 简洁蓝调（v0.5.0 更新为蓝色配色）
+- `orangesun` - 橙色阳光（温暖明亮）
+- `redruby` - 红宝石（优雅醒目）
+- `greenmint` - 绿薄荷（清新舒适）
+- `purplerain` - 紫色雨（梦幻柔和）
+- `blackink` - 黑墨水（深色模式，适合夜间阅读）
 
 **异常处理**：
 - 图片上传失败：检查图片路径和网络
@@ -520,7 +519,7 @@ cover: ./cover.jpg（可选，封面图路径）
 
 ## 📝 维护说明
 
-- **版本**: 0.4.3
+- **版本**: 0.5.0
 - **最后更新**: 2026-03-26
 - **维护者**: Ping Si <sipingme@gmail.com>
 - **许可证**: Apache-2.0
@@ -648,9 +647,11 @@ convert-url --url "$news_url" --output /tmp/article.md
 ```
 
 **3. 选择合适主题**
-- 科技类文章：`lapis`（清新极简）
-- 情感类文章：`orangeheart`（温暖优雅）
-- 教程类文章：`default`（简洁经典）
+- 科技类文章：`default`（简洁蓝调）、`greenmint`（绿薄荷）
+- 情感类文章：`orangesun`（橙色阳光）、`purplerain`（紫色雨）
+- 教程类文章：`default`（简洁蓝调）、`greenmint`（绿薄荷）
+- 正式商务：`redruby`（红宝石）、`purplerain`（紫色雨）
+- 夜间阅读：`blackink`（黑墨水深色模式）
 
 #### 示例对话
 
