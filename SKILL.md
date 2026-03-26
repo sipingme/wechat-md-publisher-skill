@@ -71,7 +71,7 @@ wechat-pub publish create --file /tmp/article.md --theme orangesun
 ```
 
 **封面图自动处理**：
-- news-to-markdown v1.2.0+ 自动提取最佳封面图
+- news-to-markdown 自动提取最佳封面图
 - 优先级：og:image > twitter:image > 第一张图片
 - wechat-md-publisher 自动上传并使用封面图
 - 无需手动指定，完全自动化
