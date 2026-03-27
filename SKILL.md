@@ -1,7 +1,7 @@
 ---
 name: wechat-md-publisher
 description: 发布 Markdown 文章到微信公众号，支持草稿管理、多主题、智能图片处理、自动封面图。推荐与 news-to-markdown-skill 配合使用实现一键转载（支持本地图片）。
-version: 0.8.3
+version: 0.8.4
 author: Ping Si <sipingme@gmail.com>
 user-invocable: true
 requires:
@@ -577,12 +577,13 @@ cover: ./cover.jpg（可选，封面图路径）
 
 ## 📝 维护说明
 
-- **版本**: 0.8.3
+- **版本**: 0.8.4
 - **最后更新**: 2026-03-27
 - **更新内容**: 
-  - 优化了 wrapper 默认样式
-  - 完善了与 news-to-markdown 的集成说明
-  - 推荐使用本地图片避免远程 URL 过期问题
+  - 优化主题样式：添加 text-align: left 到标题和 strong 元素
+  - 移除 code 背景色以提高微信兼容性
+  - 更新 wrapper header 为居中对齐
+  - 应用于所有主题：default, greenmint, orangesun, purplerain, redruby, blackink
 - **维护者**: Ping Si <sipingme@gmail.com>
 - **许可证**: Apache-2.0
 
