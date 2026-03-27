@@ -1,7 +1,7 @@
 ---
 name: wechat-md-publisher
 description: 发布 Markdown 文章到微信公众号，支持草稿管理、多主题、智能图片处理、自动封面图。推荐与 news-to-markdown-skill 配合使用实现一键转载。
-version: 0.6.7
+version: 0.7.0
 author: Ping Si <sipingme@gmail.com>
 user-invocable: true
 requires:
@@ -569,7 +569,7 @@ cover: ./cover.jpg（可选，封面图路径）
 
 ## 📝 维护说明
 
-- **版本**: 0.6.7
+- **版本**: 0.7.0
 - **最后更新**: 2026-03-27
 - **维护者**: Ping Si <sipingme@gmail.com>
 - **许可证**: Apache-2.0
