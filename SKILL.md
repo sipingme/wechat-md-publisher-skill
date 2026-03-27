@@ -1,7 +1,7 @@
 ---
 name: wechat-md-publisher
-description: 发布 Markdown 文章到微信公众号，支持草稿管理、多主题、智能图片处理、自动封面图。推荐与 news-to-markdown-skill 配合使用实现一键转载。
-version: 0.8.0
+description: 发布 Markdown 文章到微信公众号，支持草稿管理、多主题、智能图片处理、自动封面图。推荐与 news-to-markdown-skill 配合使用实现一键转载（支持本地图片）。
+version: 0.8.3
 author: Ping Si <sipingme@gmail.com>
 user-invocable: true
 requires:
@@ -63,18 +63,26 @@ wechat-pub publish create \
 ### 与 news-to-markdown 配合使用
 
 ```bash
-# 一键转载新闻到微信公众号
-# news-to-markdown 会自动提取封面图（og:image 或第一张图片）
-# wechat-md-publisher 会自动使用提取的封面图
-convert-url --url "https://www.toutiao.com/article/123" --output /tmp/article.md
-wechat-pub publish create --file /tmp/article.md --theme orangesun
+# 一键转载新闻到微信公众号（推荐：下载图片到本地）
+# news-to-markdown 会自动下载图片到本地，避免远程 URL 过期问题
+convert-url --url "https://www.toutiao.com/article/123" \
+  --output /tmp/article.md \
+  --download-images \
+  --output-dir /tmp/article
+
+# wechat-md-publisher 会自动读取本地图片并上传
+wechat-pub publish create --file /tmp/article/article.md --theme orangesun
 ```
 
-**封面图自动处理**：
-- news-to-markdown 自动提取最佳封面图
-- 优先级：og:image > twitter:image > 第一张图片
-- wechat-md-publisher 自动上传并使用封面图
-- 无需手动指定，完全自动化
+**图片处理最佳实践**（v0.8.3+）：
+- ✅ **推荐**：使用 `--download-images` 下载图片到本地
+  - 避免远程 URL 签名过期（如头条图片）
+  - 避免防盗链问题
+  - 提高发布成功率
+- news-to-markdown 自动提取封面图（og:image > twitter:image > 第一张图片）
+- 图片保存到 `./images/` 目录，Markdown 使用相对路径
+- wechat-md-publisher 自动上传本地图片到微信素材库
+- 完全自动化，无需手动处理
 
 ---
 
@@ -569,8 +577,12 @@ cover: ./cover.jpg（可选，封面图路径）
 
 ## 📝 维护说明
 
-- **版本**: 0.8.0
+- **版本**: 0.8.3
 - **最后更新**: 2026-03-27
+- **更新内容**: 
+  - 优化了 wrapper 默认样式
+  - 完善了与 news-to-markdown 的集成说明
+  - 推荐使用本地图片避免远程 URL 过期问题
 - **维护者**: Ping Si <sipingme@gmail.com>
 - **许可证**: Apache-2.0
 
@@ -602,20 +614,26 @@ cover: ./cover.jpg（可选，封面图路径）
 
 #### 完整工作流
 
-**场景 1：转载单篇新闻**
+**场景 1：转载单篇新闻（推荐方式）**
 
 ```bash
-# 步骤 1: 使用 news-to-markdown 提取新闻
+# 步骤 1: 使用 news-to-markdown 提取新闻并下载图片
 convert-url --url "https://www.toutiao.com/article/123" \
-  --output /tmp/article.md \
-  --platform toutiao \
+  --output /tmp/article/article.md \
+  --download-images \
+  --output-dir /tmp/article \
   --verbose
 
 # 步骤 2: 使用 wechat-md-publisher 发布到微信
 wechat-pub publish create \
-  --file /tmp/article.md \
+  --file /tmp/article/article.md \
   --theme orangesun
 ```
+
+**为什么要下载图片到本地？**
+- 头条图片 URL 包含签名和过期时间，几小时后会失效
+- 本地图片更可靠，不受网络波动影响
+- 避免防盗链导致的图片加载失败
 
 **场景 2：批量转载新闻**
 
@@ -628,12 +646,20 @@ urls=(
 )
 
 # 批量处理
-for url in "${urls[@]}"; do
-  # 提取新闻
-  convert-url --url "$url" --output "/tmp/$(basename $url).md"
+for i in "${!urls[@]}"; do
+  url="${urls[$i]}"
+  output_dir="/tmp/article-$i"
+  
+  # 提取新闻并下载图片
+  convert-url --url "$url" \
+    --output "$output_dir/article.md" \
+    --download-images \
+    --output-dir "$output_dir"
   
   # 发布到微信（创建草稿）
-  wechat-pub draft create --file "/tmp/$(basename $url).md" --theme default
+  wechat-pub draft create \
+    --file "$output_dir/article.md" \
+    --theme default
   
   echo "✓ 已处理: $url"
 done
