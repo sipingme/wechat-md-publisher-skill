@@ -1,7 +1,7 @@
 ---
 name: wechat-md-publisher
 description: 发布 Markdown 文章到微信公众号，支持草稿管理、多主题、智能图片处理、自动封面图。推荐与 news-to-markdown-skill 配合使用实现一键转载（支持本地图片）。
-version: 0.8.9
+version: 0.8.10
 author: Ping Si <sipingme@gmail.com>
 user-invocable: true
 requires:
@@ -10,6 +10,20 @@ requires:
   - env:
       - WECHAT_APP_ID: "微信公众号 AppID（必需）"
       - WECHAT_APP_SECRET: "微信公众号 AppSecret（必需）"
+permissions:
+  filesystem:
+    read:
+      - "*.md": "读取用户指定的 Markdown 文件"
+      - "*.jpg,*.png,*.gif": "读取文章中引用的本地图片"
+    write:
+      - "~/.config/wechat-md-publisher-nodejs/": "存储账号配置和缓存（凭证使用 AES-256 加密）"
+  network:
+    - "api.weixin.qq.com": "微信公众号 API（发布、草稿、素材管理）"
+    - "mp.weixin.qq.com": "微信公众号素材上传"
+  credentials:
+    - name: "WECHAT_APP_SECRET"
+      storage: "AES-256 加密存储于 ~/.config/wechat-md-publisher-nodejs/"
+      consent: "需要用户明确提供，不会自动收集"
 tags:
   - wechat
   - publishing
