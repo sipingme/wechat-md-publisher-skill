@@ -1,0 +1,10 @@
+{
+  "name": "wechat-md-publisher",
+  "slug": "wechat-md-publisher",
+  "version": "0.8.15",
+  "requiredEnvVars": ["WECHAT_APP_ID", "WECHAT_APP_SECRET"],
+  "credentials": {
+    "required": ["WECHAT_APP_ID", "WECHAT_APP_SECRET"],
+    "storage": "由上游 wechat-md-publisher npm 包处理，存储于 ~/.config/wechat-md-publisher-nodejs/"
+  }
+}
