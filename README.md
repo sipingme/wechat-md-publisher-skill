@@ -297,7 +297,7 @@ wechat-pub --version  # 应显示 0.3.2
 ### 数据隐私
 
 - ✅ 默认情况下，所有通信仅限于微信官方 API
-- ✅ 配置文件仅存储在本地（凭证使用 AES-256 加密）
+- ✅ 配置文件仅存储在本地（凭证加密由 [wechat-md-publisher](https://github.com/sipingme/wechat-md-publisher) npm 包处理）
 - ❌ 不会自动收集用户信息
 - ⚠️ **例外**：如果用户配置了远程主题（`theme add-remote`），会向该第三方端点发送请求
 

@@ -2,7 +2,7 @@
   "skill": {
     "name": "wechat-md-publisher",
     "displayName": "WeChat MD Publisher",
-    "version": "0.8.12",
+    "version": "0.8.13",
     "description": "全功能微信公众号 Markdown 发布工具 - 支持草稿、发布、删除和多主题",
     "author": {
       "name": "Ping Si",
@@ -43,8 +43,9 @@
       "primary": "WECHAT_APP_SECRET",
       "storage": {
         "location": "~/.config/wechat-md-publisher-nodejs/",
-        "format": "encrypted JSON (AES-256)",
-        "note": "AppSecret 使用 AES-256 加密存储，不会以明文形式保存"
+        "handler": "wechat-md-publisher npm 包",
+        "handlerRepo": "https://github.com/sipingme/wechat-md-publisher",
+        "note": "凭证加密由上游 npm 包处理，本 skill 不直接处理凭证存储"
       }
     },
     "features": [
