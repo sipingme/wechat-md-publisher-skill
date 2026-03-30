@@ -2,7 +2,7 @@
   "skill": {
     "name": "wechat-md-publisher",
     "displayName": "WeChat MD Publisher",
-    "version": "0.5.2",
+    "version": "0.8.9",
     "description": "全功能微信公众号 Markdown 发布工具 - 支持草稿、发布、删除和多主题",
     "author": {
       "name": "Ping Si",
@@ -25,7 +25,27 @@
     "requirements": {
       "node": ">=18.0.0",
       "npm": ">=8.0.0",
-      "os": ["darwin", "linux", "win32"]
+      "os": ["darwin", "linux", "win32"],
+      "env": {
+        "required": [
+          {
+            "name": "WECHAT_APP_ID",
+            "description": "微信公众号 AppID（必需）"
+          },
+          {
+            "name": "WECHAT_APP_SECRET",
+            "description": "微信公众号 AppSecret（必需）"
+          }
+        ]
+      }
+    },
+    "credentials": {
+      "primary": "WECHAT_APP_SECRET",
+      "storage": {
+        "location": "~/.config/wechat-md-publisher-nodejs/",
+        "format": "encrypted JSON (AES-256)",
+        "note": "AppSecret 使用 AES-256 加密存储，不会以明文形式保存"
+      }
     },
     "features": [
       "完整的草稿和发布管理",
