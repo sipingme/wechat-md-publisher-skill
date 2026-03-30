@@ -205,12 +205,14 @@ export WECHAT_APP_SECRET="your_app_secret"
 ### 自定义主题
 
 ```bash
-# 添加本地主题
+# 添加本地主题（推荐）
 wechat-pub theme add-local --name my-theme --path ./my-theme.css
 
-# 添加远程主题 API
+# 添加远程主题 API（⚠️ 见下方安全警告）
 wechat-pub theme add-remote --name md2wechat --url https://api.md2wechat.cn --key xxx
 ```
+
+> ⚠️ **远程主题安全警告**：使用 `theme add-remote` 会向第三方服务器发送请求。请仅使用您信任的远程主题 API。远程主题端点不在本 skill 的默认网络权限范围内，需要用户明确配置并承担相应风险。
 
 ## ⚠️ 常见问题
 
