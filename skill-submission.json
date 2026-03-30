@@ -2,8 +2,9 @@
   "skill": {
     "name": "wechat-md-publisher",
     "displayName": "WeChat MD Publisher",
-    "version": "0.8.13",
+    "version": "0.8.14",
     "description": "全功能微信公众号 Markdown 发布工具 - 支持草稿、发布、删除和多主题",
+    "requiredEnvVars": ["WECHAT_APP_ID", "WECHAT_APP_SECRET"],
     "author": {
       "name": "Ping Si",
       "email": "sipingme@gmail.com",
