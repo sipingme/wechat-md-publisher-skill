@@ -1,0 +1,74 @@
+{
+  "name": "wechat-md-publisher",
+  "displayName": "WeChat MD Publisher",
+  "version": "0.8.15",
+  "description": "全功能微信公众号 Markdown 发布工具 - 支持草稿、发布、删除和多主题",
+  "author": "Ping Si <sipingme@gmail.com>",
+  "license": "Apache-2.0",
+  "repository": "https://github.com/sipingme/wechat-md-publisher-skill",
+  "requires": {
+    "runtime": [
+      { "name": "node", "version": ">=18.0.0" },
+      { "name": "npm", "version": ">=8.0.0" }
+    ],
+    "packages": [
+      { "npm": "wechat-md-publisher", "global": true }
+    ],
+    "binaries": [
+      { "name": "wechat-pub", "providedBy": "wechat-md-publisher" }
+    ]
+  },
+  "env": {
+    "required": [
+      {
+        "name": "WECHAT_APP_ID",
+        "description": "微信公众号 AppID",
+        "sensitive": false
+      },
+      {
+        "name": "WECHAT_APP_SECRET",
+        "description": "微信公众号 AppSecret",
+        "sensitive": true
+      }
+    ]
+  },
+  "install": {
+    "command": "npm install -g wechat-md-publisher",
+    "riskLevel": "moderate",
+    "riskReason": "全局安装第三方 npm 包，会在主机上执行未经审计的代码",
+    "requiresApproval": true,
+    "source": {
+      "registry": "npmjs.com",
+      "package": "wechat-md-publisher",
+      "repository": "https://github.com/sipingme/wechat-md-publisher"
+    }
+  },
+  "credentials": {
+    "primary": "WECHAT_APP_SECRET",
+    "storage": {
+      "location": "~/.config/wechat-md-publisher-nodejs/",
+      "encryption": "AES-256",
+      "handler": "wechat-md-publisher npm 包",
+      "handlerRepo": "https://github.com/sipingme/wechat-md-publisher"
+    },
+    "securityNote": "凭证加密由上游 npm 包处理，本 skill 不直接处理凭证存储。建议审查上游包的加密实现。"
+  },
+  "configPaths": [
+    {
+      "path": "~/.config/wechat-md-publisher-nodejs/",
+      "description": "账号配置和缓存目录",
+      "containsCredentials": true
+    }
+  ],
+  "permissions": {
+    "filesystem": {
+      "read": ["*.md", "*.jpg", "*.png", "*.gif"],
+      "write": ["~/.config/wechat-md-publisher-nodejs/"]
+    },
+    "network": {
+      "required": ["api.weixin.qq.com", "mp.weixin.qq.com"],
+      "optional": ["用户配置的远程主题 API"]
+    }
+  },
+  "tags": ["wechat", "publishing", "markdown", "content-management"]
+}
