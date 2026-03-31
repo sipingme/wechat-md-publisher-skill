@@ -43,15 +43,18 @@
       "repository": "https://github.com/sipingme/wechat-md-publisher"
     }
   },
+  "requiredEnvVars": ["WECHAT_APP_ID", "WECHAT_APP_SECRET"],
   "credentials": {
     "primary": "WECHAT_APP_SECRET",
+    "required": ["WECHAT_APP_ID", "WECHAT_APP_SECRET"],
     "storage": {
       "location": "~/.config/wechat-md-publisher-nodejs/",
       "encryption": "AES-256",
       "handler": "wechat-md-publisher npm 包",
-      "handlerRepo": "https://github.com/sipingme/wechat-md-publisher"
+      "handlerRepo": "https://github.com/sipingme/wechat-md-publisher",
+      "auditFile": "src/services/account.ts"
     },
-    "securityNote": "凭证加密由上游 npm 包处理，本 skill 不直接处理凭证存储。建议审查上游包的加密实现。"
+    "securityNote": "凭证加密由上游 npm 包处理。使用前请审计 https://github.com/sipingme/wechat-md-publisher/blob/main/src/services/account.ts"
   },
   "configPaths": [
     {
