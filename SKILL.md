@@ -1,7 +1,7 @@
 ---
 name: wechat-md-publisher
 description: 发布 Markdown 文章到微信公众号，支持草稿管理、多主题、智能图片处理、自动封面图。推荐与 news-to-markdown-skill 配合使用实现一键转载（支持本地图片）。
-version: 0.8.22
+version: 0.8.23
 author: Ping Si <sipingme@gmail.com>
 user-invocable: true
 requires:
@@ -42,7 +42,7 @@ permissions:
       - "api.weixin.qq.com": "微信公众号 API（发布、草稿、素材管理）"
       - "mp.weixin.qq.com": "微信公众号素材上传"
     optional:
-      - "用户配置的远程主题 API": "仅当用户使用 theme add-remote 命令时才会访问（⚠️ 需用户明确配置并信任该端点）"
+      - "remote-theme-api": "仅当用户使用 theme add-remote 命令时才会访问（⚠️ 需用户明确配置并信任该端点）"
 credentials:
   - name: WECHAT_APP_SECRET
     type: api-secret
