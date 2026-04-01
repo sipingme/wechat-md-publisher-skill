@@ -1,7 +1,7 @@
 {
   "name": "wechat-md-publisher",
   "displayName": "WeChat MD Publisher",
-  "version": "0.8.17",
+  "version": "0.8.18",
   "description": "全功能微信公众号 Markdown 发布工具 - 支持草稿、发布、删除和多主题",
   "author": "Ping Si <sipingme@gmail.com>",
   "license": "Apache-2.0",
@@ -33,14 +33,25 @@
     ]
   },
   "install": {
+    "type": "npm",
     "command": "npm install -g wechat-md-publisher",
+    "package": "wechat-md-publisher",
+    "global": true,
+    "autoInstall": false,
+    "autoUpdate": false,
     "riskLevel": "moderate",
-    "riskReason": "全局安装第三方 npm 包，会在主机上执行未经审计的代码",
+    "riskReason": "全局安装第三方 npm 包，会在主机上执行未经审计的代码。安装前请审计源码。",
     "requiresApproval": true,
     "source": {
-      "registry": "npmjs.com",
+      "type": "npm",
+      "registry": "https://registry.npmjs.org",
       "package": "wechat-md-publisher",
-      "repository": "https://github.com/sipingme/wechat-md-publisher"
+      "repository": "https://github.com/sipingme/wechat-md-publisher",
+      "license": "Apache-2.0"
+    },
+    "verification": {
+      "command": "wechat-pub --version",
+      "expectedBinary": "wechat-pub"
     }
   },
   "requiredEnvVars": ["WECHAT_APP_ID", "WECHAT_APP_SECRET"],
