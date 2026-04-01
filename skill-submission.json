@@ -9,9 +9,26 @@
     "optional": []
   },
   "install": {
+    "type": "npm",
     "command": "npm install -g wechat-md-publisher",
+    "package": "wechat-md-publisher",
+    "global": true,
+    "autoInstall": false,
+    "autoUpdate": false,
     "riskLevel": "moderate",
-    "requiresApproval": true
+    "riskReason": "全局安装第三方 npm 包，会在主机上执行未经审计的代码。安装前请审计源码。",
+    "requiresApproval": true,
+    "source": {
+      "type": "npm",
+      "registry": "https://registry.npmjs.org",
+      "package": "wechat-md-publisher",
+      "repository": "https://github.com/sipingme/wechat-md-publisher",
+      "license": "Apache-2.0"
+    },
+    "verification": {
+      "command": "wechat-pub --version",
+      "expectedBinary": "wechat-pub"
+    }
   },
   "credentials": {
     "primary": "WECHAT_APP_SECRET",
