@@ -1,7 +1,7 @@
 {
   "name": "wechat-md-publisher",
   "slug": "wechat-md-publisher",
-  "version": "0.8.22",
+  "version": "0.8.25",
   "requiredEnvVars": ["WECHAT_APP_ID", "WECHAT_APP_SECRET"],
   "install": {
     "type": "npm",
