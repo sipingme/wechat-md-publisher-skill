@@ -27,6 +27,13 @@
   },
   "credentials": {
     "required": ["WECHAT_APP_ID", "WECHAT_APP_SECRET"],
-    "storage": "由上游 wechat-md-publisher npm 包处理，存储于 ~/.config/wechat-md-publisher-nodejs/"
+    "storage": {
+      "location": "~/.config/wechat-md-publisher-nodejs/",
+      "encryption": "AES-256",
+      "handler": "wechat-md-publisher npm 包",
+      "handlerRepo": "https://github.com/sipingme/wechat-md-publisher",
+      "auditFile": "src/services/account.ts"
+    },
+    "securityNote": "凭证加密由上游 npm 包处理。使用前请审计 https://github.com/sipingme/wechat-md-publisher/blob/main/src/services/account.ts"
   }
 }
