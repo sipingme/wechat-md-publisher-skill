@@ -1,7 +1,7 @@
 {
   "name": "wechat-md-publisher",
   "slug": "wechat-md-publisher",
-  "version": "0.8.31",
+  "version": "0.8.33",
   "requiredEnvVars": ["WECHAT_APP_ID", "WECHAT_APP_SECRET"],
   "install": {
     "type": "npm",
@@ -22,7 +22,8 @@
     },
     "verification": {
       "command": "wechat-pub --version",
-      "expectedBinary": "wechat-pub"
+      "expectedBinary": "wechat-pub",
+      "script": "./verify.sh"
     }
   },
   "credentials": {

@@ -1,9 +1,10 @@
 #!/bin/bash
-# OpenClaw Skill Installation Script for wechat-md-publisher
+# OpenClaw Skill Verification Script for wechat-md-publisher
+# This script verifies the installation, it does NOT auto-install packages.
 
 set -e
 
-echo "🚀 Setting up wechat-md-publisher OpenClaw Skill..."
+echo "� Verifying wechat-md-publisher OpenClaw Skill setup..."
 
 # Check if npm is installed
 if ! command -v npm &> /dev/null; then
