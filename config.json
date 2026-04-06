@@ -10,32 +10,32 @@
   },
   "commands": {
     "publish": {
-      "script": "./scripts/publish.js",
+      "script": "./scripts/run.js",
       "args": ["publish"],
       "description": "发布文章到微信公众号"
     },
     "draft": {
-      "script": "./scripts/publish.js",
+      "script": "./scripts/run.js",
       "args": ["draft"],
       "description": "创建微信公众号草稿"
     },
     "wrapper": {
-      "script": "./scripts/publish.js",
+      "script": "./scripts/run.js",
       "args": ["wrapper"],
       "description": "Wrapper 功能管理（文章开头/结尾固定图文）"
     },
     "list-drafts": {
-      "script": "./scripts/publish.js",
+      "script": "./scripts/run.js",
       "args": ["list-drafts"],
       "description": "列出所有草稿"
     },
     "list-published": {
-      "script": "./scripts/publish.js",
+      "script": "./scripts/run.js",
       "args": ["list-published"],
       "description": "列出已发布文章"
     },
     "themes": {
-      "script": "./scripts/publish.js",
+      "script": "./scripts/run.js",
       "args": ["themes"],
       "description": "列出可用主题"
     }
