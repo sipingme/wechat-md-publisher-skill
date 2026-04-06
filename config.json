@@ -38,6 +38,11 @@
       "script": "./scripts/run.js",
       "args": ["themes"],
       "description": "列出可用主题"
+    },
+    "help": {
+      "script": "./scripts/postinstall.js",
+      "args": [],
+      "description": "显示使用帮助"
     }
   },
   "environment": {
