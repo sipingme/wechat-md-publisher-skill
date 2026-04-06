@@ -1,10 +1,10 @@
 {
   "name": "wechat-md-publisher",
-  "version": "0.8.37",
+  "version": "0.8.38",
   "requiredEnvVars": ["WECHAT_APP_ID", "WECHAT_APP_SECRET"],
   "skill": {
     "name": "wechat-md-publisher",
-    "version": "0.8.37",
+    "version": "0.8.38",
     "enabled": true,
     "autoInvoke": false
   },
