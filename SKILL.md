@@ -1,7 +1,7 @@
 ---
 name: wechat-md-publisher
 description: 发布 Markdown 文章到微信公众号，支持草稿管理、多主题、智能图片处理、自动封面图。推荐与 news-to-markdown-skill 配合使用实现一键转载（支持本地图片）。
-version: 0.8.35
+version: 0.8.36
 author: Ping Si <sipingme@gmail.com>
 user-invocable: true
 requires:
@@ -10,12 +10,18 @@ requires:
       version: ">=18.0.0"
     - name: npm
       version: ">=8.0.0"
-  packages:
-    - npm: wechat-md-publisher
-      global: true
-  binaries:
-    - name: wechat-pub
-      providedBy: wechat-md-publisher
+install:
+  type: npx
+  package: wechat-md-publisher
+  version: "^0.8.36"
+  execution: "npx --yes wechat-md-publisher@^0.8.36"
+  riskLevel: moderate
+  riskReason: "通过 npx 动态拉取并执行第三方 npm 包，存在供应链风险。使用前请审计源码。"
+  source:
+    registry: https://registry.npmjs.org
+    repository: https://github.com/sipingme/wechat-md-publisher
+    license: Apache-2.0
+    audit: https://github.com/sipingme/wechat-md-publisher/blob/main/src/index.ts
 env:
   required:
     - name: WECHAT_APP_ID
@@ -82,16 +88,16 @@ repository: https://github.com/sipingme/wechat-md-publisher
 
 ## ⚡ 快速开始
 
-### 安装
+### ⚠️ 供应链风险提示
 
-```bash
-npm install -g wechat-md-publisher
-```
+本 Skill 通过 `npx` 动态拉取并执行第三方 npm 包 `wechat-md-publisher`，存在供应链风险。使用前请审计源码：
+- **源码仓库**: https://github.com/sipingme/wechat-md-publisher
+- **审计入口**: https://github.com/sipingme/wechat-md-publisher/blob/main/src/index.ts
 
 ### 配置账号
 
 ```bash
-wechat-pub account add \
+npx --yes wechat-md-publisher@^0.8.36 account add \
   --name "我的公众号" \
   --app-id "wx_your_app_id" \
   --app-secret "your_app_secret" \
@@ -101,7 +107,7 @@ wechat-pub account add \
 ### 发布文章
 
 ```bash
-wechat-pub publish create \
+npx --yes wechat-md-publisher@^0.8.36 publish create \
   --file article.md \
   --theme orangesun
 ```
@@ -117,7 +123,7 @@ convert-url --url "https://www.toutiao.com/article/123" \
   --output-dir /tmp/article
 
 # wechat-md-publisher 会自动读取本地图片并上传
-wechat-pub publish create --file /tmp/article/article.md --theme orangesun
+npx --yes wechat-md-publisher@^0.8.36 publish create --file /tmp/article/article.md --theme orangesun
 ```
 
 **图片处理最佳实践**（v0.8.3+）：
@@ -176,14 +182,13 @@ wechat-pub publish create --file /tmp/article/article.md --theme orangesun
    - 在「IP白名单」中添加该 IP
    - 详细指南：[IP 白名单配置指南](./references/ip-whitelist-guide.md)
 
-### 3. 安装 Skill
+### 3. 使用方式
+
+本 Skill 通过 `npx` 动态执行，无需全局安装：
 
 ```bash
-# 全局安装
-npm install -g wechat-md-publisher
-
-# 或使用 npx（无需安装）
-npx wechat-md-publisher --help
+# 查看帮助
+npx --yes wechat-md-publisher@^0.8.36 --help
 ```
 
 ## 🚀 标准操作流程 (SOP)
@@ -198,7 +203,7 @@ npx wechat-md-publisher --help
 2. 执行命令添加账号：
 
 ```bash
-wechat-pub account add \
+npx --yes wechat-md-publisher@^0.8.36 account add \
   --name "账号名称" \
   --app-id "wx_your_app_id" \
   --app-secret "your_app_secret" \
@@ -208,7 +213,7 @@ wechat-pub account add \
 3. 验证账号添加成功：
 
 ```bash
-wechat-pub account list
+npx --yes wechat-md-publisher@^0.8.36 account list
 ```
 
 **输出示例**：
@@ -251,7 +256,7 @@ EOF
 2. 执行发布命令：
 
 ```bash
-wechat-pub publish create \
+npx --yes wechat-md-publisher@^0.8.36 publish create \
   --file /tmp/article.md \
   --theme orangesun
 ```
@@ -295,7 +300,7 @@ wechat-pub publish create \
 2. 执行草稿创建命令：
 
 ```bash
-wechat-pub draft create \
+npx --yes wechat-md-publisher@^0.8.36 draft create \
   --file /tmp/article.md \
   --theme default
 ```
@@ -313,7 +318,7 @@ Media ID: 3_abcdefghijk123456
 
 **后续操作**：
 - 用户可以在微信公众平台编辑草稿
-- 需要发布时，使用 `wechat-pub publish submit <media-id>`
+- 需要发布时，使用 `npx --yes wechat-md-publisher@^0.8.36 publish submit <media-id>`
 
 ---
 
@@ -324,7 +329,7 @@ Media ID: 3_abcdefghijk123456
 **命令**：
 
 ```bash
-wechat-pub draft list --page 1 --size 10
+npx --yes wechat-md-publisher@^0.8.36 draft list --page 1 --size 10
 ```
 
 **输出示例**：
@@ -348,7 +353,7 @@ wechat-pub draft list --page 1 --size 10
 **命令**：
 
 ```bash
-wechat-pub publish list --page 1 --size 10
+npx --yes wechat-md-publisher@^0.8.36 publish list --page 1 --size 10
 ```
 
 **输出示例**：
@@ -369,13 +374,13 @@ wechat-pub publish list --page 1 --size 10
 **删除草稿**：
 
 ```bash
-wechat-pub draft delete <media-id>
+npx --yes wechat-md-publisher@^0.8.36 draft delete <media-id>
 ```
 
 **删除已发布文章**：
 
 ```bash
-wechat-pub publish delete <article-id>
+npx --yes wechat-md-publisher@^0.8.36 publish delete <article-id>
 ```
 
 ---
@@ -385,7 +390,7 @@ wechat-pub publish delete <article-id>
 **命令**：
 
 ```bash
-wechat-pub theme list
+npx --yes wechat-md-publisher@^0.8.36 theme list
 ```
 
 **输出示例**：
@@ -415,34 +420,34 @@ wechat-pub theme list
 
 **开启功能**：
 ```bash
-wechat-pub wrapper on
+npx --yes wechat-md-publisher@^0.8.36 wrapper on
 ```
 
 **设置内容**：
 ```bash
-wechat-pub wrapper set \
+npx --yes wechat-md-publisher@^0.8.36 wrapper set \
   --header "<div>欢迎关注我们的公众号</div>" \
   --footer "<div>觉得有帮助请点赞+收藏</div>"
 ```
 
 **查看状态**：
 ```bash
-wechat-pub wrapper status
+npx --yes wechat-md-publisher@^0.8.36 wrapper status
 ```
 
 **查看历史版本**：
 ```bash
-wechat-pub wrapper history
+npx --yes wechat-md-publisher@^0.8.36 wrapper history
 ```
 
 **回滚到指定版本**：
 ```bash
-wechat-pub wrapper rollback 1
+npx --yes wechat-md-publisher@^0.8.36 wrapper rollback 1
 ```
 
 **关闭功能**：
 ```bash
-wechat-pub wrapper off
+npx --yes wechat-md-publisher@^0.8.36 wrapper off
 ```
 
 **注意事项**：
@@ -478,7 +483,7 @@ async function publishArticle(markdown, theme) {
 ```bash
 # 批量创建草稿
 for file in articles/*.md; do
-    wechat-pub draft create --file "$file" --theme default
+    npx --yes wechat-md-publisher@^0.8.36 draft create --file "$file" --theme default
 done
 ```
 
@@ -557,7 +562,7 @@ cover: ./cover.jpg（可选，封面图路径）
 
 **症状**：提示"主题不存在"
 
-**解决**：使用 `wechat-pub theme list` 查看可用主题
+**解决**：使用 `npx --yes wechat-md-publisher@^0.8.36 theme list` 查看可用主题
 
 ### 问题 4：权限不足
 
@@ -639,10 +644,10 @@ cover: ./cover.jpg（可选，封面图路径）
 
 新用户应该能在 5 分钟内完成：
 
-- [ ] 安装工具：`npm install -g wechat-md-publisher`
-- [ ] 配置账号：`wechat-pub account add ...`
+- [ ] 验证工具可用：`npx --yes wechat-md-publisher@^0.8.36 --version`
+- [ ] 配置账号：`npx --yes wechat-md-publisher@^0.8.36 account add ...`
 - [ ] 创建测试文章
-- [ ] 发布成功：`wechat-pub publish create --file test.md --theme default`
+- [ ] 发布成功：`npx --yes wechat-md-publisher@^0.8.36 publish create --file test.md --theme default`
 - [ ] 在微信公众平台看到文章
 
 如果以上步骤都能顺利完成，说明 Skill 已正确配置！
@@ -672,7 +677,7 @@ convert-url --url "https://www.toutiao.com/article/123" \
   --verbose
 
 # 步骤 2: 使用 wechat-md-publisher 发布到微信
-wechat-pub publish create \
+npx --yes wechat-md-publisher@^0.8.36 publish create \
   --file /tmp/article/article.md \
   --theme orangesun
 ```
@@ -704,7 +709,7 @@ for i in "${!urls[@]}"; do
     --output-dir "$output_dir"
   
   # 发布到微信（创建草稿）
-  wechat-pub draft create \
+  npx --yes wechat-md-publisher@^0.8.36 draft create \
     --file "$output_dir/article.md" \
     --theme default
   
@@ -750,10 +755,10 @@ AI 执行流程：
 ```bash
 # 先创建草稿，人工审核后再发布
 convert-url --url "$news_url" --output /tmp/article.md
-wechat-pub draft create --file /tmp/article.md --theme default
+npx --yes wechat-md-publisher@^0.8.36 draft create --file /tmp/article.md --theme default
 
 # 审核通过后发布
-wechat-pub publish submit <media-id>
+npx --yes wechat-md-publisher@^0.8.36 publish submit <media-id>
 ```
 
 **2. 添加来源声明**
