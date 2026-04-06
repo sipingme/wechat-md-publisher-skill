@@ -1,10 +1,10 @@
 {
   "name": "wechat-md-publisher",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "requiredEnvVars": ["WECHAT_APP_ID", "WECHAT_APP_SECRET"],
   "skill": {
     "name": "wechat-md-publisher",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "enabled": true,
     "autoInvoke": false
   },
@@ -56,8 +56,8 @@
   "install": {
     "type": "npx",
     "package": "wechat-md-publisher",
-    "version": "^1.0.0",
-    "execution": "npx --yes wechat-md-publisher@^1.0.0",
+    "version": "^1.0.2",
+    "execution": "npx --yes wechat-md-publisher@^1.0.2",
     "global": false,
     "autoInstall": false,
     "autoUpdate": false,
@@ -73,13 +73,13 @@
       "audit": "https://github.com/sipingme/wechat-md-publisher/blob/main/src/index.ts"
     },
     "verification": {
-      "command": "npx --yes wechat-md-publisher@^1.0.0 --version",
+      "command": "npx --yes wechat-md-publisher@^1.0.2 --version",
       "expectedOutput": "1.0"
     }
   },
   "dependencies": {
     "npm": [
-      "wechat-md-publisher@^1.0.0"
+      "wechat-md-publisher@^1.0.2"
     ],
     "note": "Dependencies (jsdom, form-data-encoder, formdata-node) are bundled in wechat-md-publisher"
   },
