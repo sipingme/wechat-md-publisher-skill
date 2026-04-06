@@ -1,7 +1,7 @@
 ---
 name: wechat-md-publisher
 description: 发布 Markdown 文章到微信公众号，支持草稿管理、多主题、智能图片处理、自动封面图。推荐与 news-to-markdown-skill 配合使用实现一键转载（支持本地图片）。
-version: 0.8.38
+version: 1.0.0
 author: Ping Si <sipingme@gmail.com>
 user-invocable: true
 requires:
@@ -13,8 +13,8 @@ requires:
 install:
   type: npx
   package: wechat-md-publisher
-  version: "^0.8.38"
-  execution: "npx --yes wechat-md-publisher@^0.8.38"
+  version: "^1.0.0"
+  execution: "npx --yes wechat-md-publisher@^1.0.0"
   riskLevel: moderate
   riskReason: "通过 npx 动态拉取并执行第三方 npm 包，存在供应链风险。使用前请审计源码。"
   source:

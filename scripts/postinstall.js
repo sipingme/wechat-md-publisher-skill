@@ -30,22 +30,22 @@ ${BOLD}⚙️  环境变量配置（必需）：${RESET}
 ${BOLD}🚀 快速开始：${RESET}
 
    ${YELLOW}# 1. 配置账号${RESET}
-   npx --yes wechat-md-publisher@^0.8.38 account add \\
+   npx --yes wechat-md-publisher@^1.0.0 account add \\
      --name "我的公众号" \\
      --default
 
    ${YELLOW}# 2. 发布文章${RESET}
-   npx --yes wechat-md-publisher@^0.8.38 publish create \\
+   npx --yes wechat-md-publisher@^1.0.0 publish create \\
      --file article.md \\
      --theme orangesun
 
    ${YELLOW}# 3. 创建草稿（不立即发布）${RESET}
-   npx --yes wechat-md-publisher@^0.8.38 draft create \\
+   npx --yes wechat-md-publisher@^1.0.0 draft create \\
      --file article.md \\
      --theme default
 
    ${YELLOW}# 4. 查看可用主题${RESET}
-   npx --yes wechat-md-publisher@^0.8.38 theme list
+   npx --yes wechat-md-publisher@^1.0.0 theme list
 
 ${BOLD}🎨 可用主题：${RESET}
    ${CYAN}default${RESET}      简洁经典
@@ -70,6 +70,6 @@ ${BOLD}⚠️  安全提示：${RESET}
    - 远程主题端点可能接收文章内容，请只使用可信任的主题源
 
 ${BOLD}📖 更多信息：${RESET}
-   npx --yes wechat-md-publisher@^0.8.38 --help
+   npx --yes wechat-md-publisher@^1.0.0 --help
    https://github.com/sipingme/wechat-md-publisher
 `);
