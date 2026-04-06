@@ -56,8 +56,8 @@
   "install": {
     "type": "npx",
     "package": "wechat-md-publisher",
-    "version": "^0.8.37",
-    "execution": "npx --yes wechat-md-publisher@^0.8.37",
+    "version": "^0.8.38",
+    "execution": "npx --yes wechat-md-publisher@^0.8.38",
     "global": false,
     "autoInstall": false,
     "autoUpdate": false,
@@ -73,13 +73,13 @@
       "audit": "https://github.com/sipingme/wechat-md-publisher/blob/main/src/index.ts"
     },
     "verification": {
-      "command": "npx --yes wechat-md-publisher@^0.8.37 --version",
+      "command": "npx --yes wechat-md-publisher@^0.8.38 --version",
       "expectedOutput": "0.8"
     }
   },
   "dependencies": {
     "npm": [
-      "wechat-md-publisher@^0.8.37"
+      "wechat-md-publisher@^0.8.38"
     ],
     "note": "Dependencies (jsdom, form-data-encoder, formdata-node) are bundled in wechat-md-publisher"
   },
