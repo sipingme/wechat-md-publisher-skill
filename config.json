@@ -1,41 +1,41 @@
 {
   "name": "wechat-md-publisher",
-  "version": "0.8.33",
+  "version": "0.8.34",
   "requiredEnvVars": ["WECHAT_APP_ID", "WECHAT_APP_SECRET"],
   "skill": {
     "name": "wechat-md-publisher",
-    "version": "0.8.33",
+    "version": "0.8.34",
     "enabled": true,
     "autoInvoke": false
   },
   "commands": {
     "publish": {
-      "script": "./scripts/publish.sh",
+      "script": "./scripts/publish.js",
       "args": ["publish"],
       "description": "发布文章到微信公众号"
     },
     "draft": {
-      "script": "./scripts/publish.sh",
+      "script": "./scripts/publish.js",
       "args": ["draft"],
       "description": "创建微信公众号草稿"
     },
     "wrapper": {
-      "script": "./scripts/publish.sh",
+      "script": "./scripts/publish.js",
       "args": ["wrapper"],
       "description": "Wrapper 功能管理（文章开头/结尾固定图文）"
     },
     "list-drafts": {
-      "script": "./scripts/publish.sh",
+      "script": "./scripts/publish.js",
       "args": ["list-drafts"],
       "description": "列出所有草稿"
     },
     "list-published": {
-      "script": "./scripts/publish.sh",
+      "script": "./scripts/publish.js",
       "args": ["list-published"],
       "description": "列出已发布文章"
     },
     "themes": {
-      "script": "./scripts/publish.sh",
+      "script": "./scripts/publish.js",
       "args": ["themes"],
       "description": "列出可用主题"
     }
@@ -96,7 +96,7 @@
       "write": ["~/.config/wechat-md-publisher-nodejs/"]
     },
     "network": {
-      "domains": ["api.weixin.qq.com", "mp.weixin.qq.com"]
+      "domains": ["registry.npmjs.org", "api.weixin.qq.com", "mp.weixin.qq.com"]
     }
   }
 }
