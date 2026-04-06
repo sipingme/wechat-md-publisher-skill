@@ -49,35 +49,34 @@
     "optional": []
   },
   "install": {
-    "type": "npm",
-    "command": "npm install -g wechat-md-publisher",
+    "type": "npx",
     "package": "wechat-md-publisher",
-    "global": true,
+    "version": "^0.8.34",
+    "execution": "npx --yes wechat-md-publisher@^0.8.34",
+    "global": false,
     "autoInstall": false,
     "autoUpdate": false,
     "riskLevel": "moderate",
-    "riskReason": "全局安装第三方 npm 包，会在主机上执行未经审计的代码。安装前请审计源码。",
+    "riskReason": "通过 npx 动态拉取并执行第三方 npm 包，存在供应链风险。使用前请审计源码。",
     "requiresApproval": true,
     "source": {
       "type": "npm",
       "registry": "https://registry.npmjs.org",
       "package": "wechat-md-publisher",
       "repository": "https://github.com/sipingme/wechat-md-publisher",
-      "license": "Apache-2.0"
+      "license": "Apache-2.0",
+      "audit": "https://github.com/sipingme/wechat-md-publisher/blob/main/src/index.ts"
     },
     "verification": {
-      "command": "wechat-pub --version",
-      "expectedBinary": "wechat-pub",
-      "script": "./verify.sh"
+      "command": "npx --yes wechat-md-publisher@^0.8.34 --version",
+      "expectedOutput": "0.8"
     }
   },
   "dependencies": {
     "npm": [
-      "wechat-md-publisher@latest",
-      "jsdom@^27.4.0",
-      "form-data-encoder@^4.1.0",
-      "formdata-node@^6.0.3"
-    ]
+      "wechat-md-publisher@^0.8.34"
+    ],
+    "note": "Dependencies (jsdom, form-data-encoder, formdata-node) are bundled in wechat-md-publisher"
   },
   "credentials": {
     "required": ["WECHAT_APP_ID", "WECHAT_APP_SECRET"],
