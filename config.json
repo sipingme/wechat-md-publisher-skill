@@ -1,10 +1,11 @@
 {
   "name": "wechat-md-publisher",
-  "version": "1.0.3",
-  "requiredEnvVars": ["WECHAT_APP_ID", "WECHAT_APP_SECRET"],
+  "version": "1.0.4",
+  "requiredEnvVars": [],
+  "optionalEnvVars": ["WECHAT_APP_ID", "WECHAT_APP_SECRET"],
   "skill": {
     "name": "wechat-md-publisher",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "enabled": true,
     "autoInvoke": false
   },
@@ -47,17 +48,19 @@
   },
   "environment": {
     "required": [
-      "NODE_VERSION>=18.0.0",
+      "NODE_VERSION>=18.0.0"
+    ],
+    "optional": [
       "WECHAT_APP_ID",
       "WECHAT_APP_SECRET"
     ],
-    "optional": []
+    "note": "凭证可通过环境变量或 CLI 命令 (account add --app-id xxx --app-secret xxx) 提供"
   },
   "install": {
     "type": "npx",
     "package": "wechat-md-publisher",
-    "version": "^1.0.3",
-    "execution": "npx --yes wechat-md-publisher@^1.0.3",
+    "version": "^1.0.4",
+    "execution": "npx --yes wechat-md-publisher@^1.0.4",
     "global": false,
     "autoInstall": false,
     "autoUpdate": false,
@@ -73,18 +76,20 @@
       "audit": "https://github.com/sipingme/wechat-md-publisher/blob/main/src/index.ts"
     },
     "verification": {
-      "command": "npx --yes wechat-md-publisher@^1.0.3 --version",
+      "command": "npx --yes wechat-md-publisher@^1.0.4 --version",
       "expectedOutput": "1.0"
     }
   },
   "dependencies": {
     "npm": [
-      "wechat-md-publisher@^1.0.3"
+      "wechat-md-publisher@^1.0.4"
     ],
     "note": "Dependencies (jsdom, form-data-encoder, formdata-node) are bundled in wechat-md-publisher"
   },
   "credentials": {
-    "required": ["WECHAT_APP_ID", "WECHAT_APP_SECRET"],
+    "required": [],
+    "optional": ["WECHAT_APP_ID", "WECHAT_APP_SECRET"],
+    "note": "凭证可通过环境变量或 CLI 命令提供（二选一）",
     "storage": {
       "location": "~/.config/wechat-md-publisher-nodejs/",
       "encryption": "AES-256",
