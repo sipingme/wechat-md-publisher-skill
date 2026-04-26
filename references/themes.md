@@ -1,18 +1,17 @@
 # WeChat Publisher - 主题使用指南
 
-## 8 个内置主题
+## 6 个内置主题
 
-所有主题来自 [@wenyan-md/core](https://github.com/caol64/wenyan-core)，专为微信公众号优化。
+`wechat-md-publisher` 提供 6 个专为微信公众号优化的内置主题，开箱即用。
 
 ### 1. default - 默认主题
 
-**风格**：简洁经典，适合正式文章
+**风格**：简洁清爽，适合各类文章
 
 **适用场景**：
-- 企业公告
-- 正式通知
-- 技术文档
-- 学术文章
+- 企业公告、正式通知
+- 技术文档、学术文章
+- 通用内容
 
 **使用**：
 ```bash
@@ -21,121 +20,82 @@ wechat-pub publish create --file article.md --theme default
 
 ---
 
-### 2. orangeheart - Orange Heart
+### 2. blackink - Black Ink
 
-**风格**：温暖优雅，橙色调
+**风格**：深色模式，靛蓝点缀，适合夜间阅读
 
 **适用场景**：
-- 情感类文章
-- 生活分享
-- 品牌故事
-- 温馨内容
+- 夜间阅读类内容
+- 科技、极客风格文章
+- 深色调品牌内容
 
 **使用**：
 ```bash
-wechat-pub publish create --file article.md --theme orangeheart
+wechat-pub publish create --file article.md --theme blackink
 ```
 
 ---
 
-### 3. rainbow - Rainbow
+### 3. orangesun - Orange Sun
 
-**风格**：活泼清爽，多彩
+**风格**：温暖明亮，橙色阳光系
 
 **适用场景**：
-- 轻松趣味内容
-- 儿童教育
-- 创意分享
-- 娱乐资讯
+- 生活类、旅行类文章
+- 轻松活泼的内容
+- 节日推送
 
 **使用**：
 ```bash
-wechat-pub publish create --file article.md --theme rainbow
+wechat-pub publish create --file article.md --theme orangesun
 ```
 
 ---
 
-### 4. lapis - Lapis
+### 4. redruby - Red Ruby
 
-**风格**：清新极简，蓝色调
+**风格**：优雅大气，宝石红点缀
 
 **适用场景**：
-- 技术文章
-- 专业内容
-- 产品介绍
-- 数据分析
+- 品牌介绍、时尚类文章
+- 重要公告、活动推广
+- 视觉冲击力强的内容
 
 **使用**：
 ```bash
-wechat-pub publish create --file article.md --theme lapis
+wechat-pub publish create --file article.md --theme redruby
 ```
 
 ---
 
-### 5. pie - Pie
+### 5. greenmint - Green Mint
 
-**风格**：现代锐利，灵感来自 sspai.com
-
-**适用场景**：
-- 产品评测
-- 设计分享
-- 效率工具
-- 科技资讯
-
-**使用**：
-```bash
-wechat-pub publish create --file article.md --theme pie
-```
-
----
-
-### 6. maize - Maize
-
-**风格**：柔和舒适，米黄色调
+**风格**：清新自然，薄荷绿色调
 
 **适用场景**：
-- 教育内容
-- 知识分享
-- 读书笔记
-- 文化艺术
-
-**使用**：
-```bash
-wechat-pub publish create --file article.md --theme maize
-```
-
----
-
-### 7. purple - Purple
-
-**风格**：简约文艺，紫色调
-
-**适用场景**：
-- 个人博客
-- 文艺创作
-- 摄影作品
-- 艺术展示
-
-**使用**：
-```bash
-wechat-pub publish create --file article.md --theme purple
-```
-
----
-
-### 8. phycat - 物理猫-薄荷
-
-**风格**：薄荷绿，结构清晰
-
-**适用场景**：
-- 科普文章
+- 健康、环保类文章
 - 教程指南
-- 步骤说明
-- 知识讲解
+- 清新风格内容
 
 **使用**：
 ```bash
-wechat-pub publish create --file article.md --theme phycat
+wechat-pub publish create --file article.md --theme greenmint
+```
+
+---
+
+### 6. purplerain - Purple Rain
+
+**风格**：梦幻浪漫，紫色渐变
+
+**适用场景**：
+- 文艺类、情感类文章
+- 个人博客
+- 创意内容
+
+**使用**：
+```bash
+wechat-pub publish create --file article.md --theme purplerain
 ```
 
 ---
@@ -146,27 +106,46 @@ wechat-pub publish create --file article.md --theme phycat
 
 | 内容类型 | 推荐主题 | 备选主题 |
 |---------|---------|---------|
-| 技术文章 | lapis | default, pie |
-| 生活分享 | orangeheart | maize, rainbow |
-| 产品介绍 | pie | lapis, default |
-| 教育内容 | maize | phycat, default |
-| 情感文章 | orangeheart | purple, maize |
-| 科普教程 | phycat | lapis, maize |
-| 创意内容 | rainbow | purple, orangeheart |
-| 正式公告 | default | lapis |
+| 技术文章 | default | blackink |
+| 生活分享 | orangesun | greenmint |
+| 品牌时尚 | redruby | purplerain |
+| 教育内容 | greenmint | default |
+| 文艺情感 | purplerain | orangesun |
+| 正式公告 | default | redruby |
+| 夜间/深色 | blackink | - |
 
 ### 按品牌调性选择
 
-- **专业严谨**：default, lapis
-- **温暖亲切**：orangeheart, maize
-- **年轻活力**：rainbow, pie
-- **文艺清新**：purple, phycat
+- **专业简洁**：default
+- **温暖活力**：orangesun、greenmint
+- **优雅大气**：redruby、purplerain
+- **深色极简**：blackink
+
+---
+
+## 查看可用主题
+
+```bash
+wechat-pub theme list
+```
+
+输出示例：
+```
+┌─────────────┬──────────────┬──────────┬────────────────────────────┐
+│ ID          │ 名称         │ 类型     │ 描述                       │
+├─────────────┼──────────────┼──────────┼────────────────────────────┤
+│ default     │ 默认主题     │ builtin  │ 简洁清爽的默认样式         │
+│ blackink    │ Black Ink    │ builtin  │ 深色模式，靛蓝点缀         │
+│ orangesun   │ Orange Sun   │ builtin  │ 温暖明亮的橙色系主题       │
+│ redruby     │ Red Ruby     │ builtin  │ 优雅的宝石红风格           │
+│ greenmint   │ Green Mint   │ builtin  │ 清新薄荷绿，轻松舒适       │
+│ purplerain  │ Purple Rain  │ builtin  │ 梦幻紫色渐变               │
+└─────────────┴──────────────┴──────────┴────────────────────────────┘
+```
 
 ---
 
 ## 测试所有主题
-
-想要对比不同主题的效果？可以批量测试：
 
 ```bash
 # 创建测试文章
@@ -187,8 +166,8 @@ title: 主题测试
 **粗体文本** 和 *斜体文本*
 EOF
 
-# 测试所有主题
-for theme in default orangeheart rainbow lapis pie maize purple phycat; do
+# 测试所有主题（创建草稿对比）
+for theme in default blackink orangesun redruby greenmint purplerain; do
     echo "测试主题: $theme"
     wechat-pub draft create --file test.md --theme $theme
 done
@@ -206,19 +185,15 @@ done
 
 ```css
 /* my-theme.css */
-:root {
-    --primary-color: #ff6b6b;
-    --text-color: #2c3e50;
-}
-
 #wenyan {
     font-size: 16px;
     line-height: 1.8;
+    color: #2c3e50;
 }
 
 #wenyan h1 {
-    color: var(--primary-color);
-    border-bottom: 3px solid var(--primary-color);
+    color: #ff6b6b;
+    border-bottom: 3px solid #ff6b6b;
 }
 ```
 
@@ -236,24 +211,6 @@ wechat-pub publish create --file article.md --theme my-theme
 
 ---
 
-## 主题预览
-
-想要在发布前预览主题效果？
-
-1. 先创建草稿：
-```bash
-wechat-pub draft create --file article.md --theme orangeheart
-```
-
-2. 在微信公众平台查看草稿预览
-
-3. 满意后再发布：
-```bash
-wechat-pub publish submit <media-id>
-```
-
----
-
 ## 常见问题
 
 ### Q: 如何查看所有可用主题？
@@ -264,21 +221,8 @@ wechat-pub theme list
 
 ### Q: 主题可以修改吗？
 
-内置主题不可修改，但可以：
-- 创建自定义主题
-- 基于内置主题修改后另存为新主题
+内置主题不可修改，但可以创建自定义主题，基于内置主题的 CSS 另存为新主题。
 
 ### Q: 发布后可以更换主题吗？
 
-不可以。已发布的文章主题无法更改，需要：
-1. 删除原文章
-2. 用新主题重新发布
-
-### Q: 哪个主题最受欢迎？
-
-根据社区反馈：
-1. **orangeheart** - 温暖优雅，适用范围广
-2. **lapis** - 专业清爽，技术文章首选
-3. **pie** - 现代时尚，年轻用户喜爱
-
-建议根据自己的内容风格和受众选择。
+不可以。已发布的文章主题无法更改，需要删除原文章后用新主题重新发布。
