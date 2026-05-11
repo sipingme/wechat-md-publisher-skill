@@ -2,7 +2,28 @@
 
 > 全功能微信公众号 Markdown 发布工具 - OpenClaw Skill 版本
 
-## 🚀 快速安装
+## 🛠️ 前置安装：底层 npm 包
+
+本 Skill 的启动器 (`scripts/run.js`) 通过 in-process 动态 `import` 调用本机已安装的 `wechat-md-publisher`，**不会**通过 `npx` 在运行时从 registry 拉取代码。
+因此**必须**在首次使用前显式全局安装底层包，并在安装前完成源码审计。
+
+> ⚠️ **必须使用精确版本（无 caret、无 `@latest`）**。启动器会在 `import` 之前读取已解析包的 `package.json`，校验 `name` 与 `version` 是否与内置 pin（当前 `1.0.7`）精确匹配，任何不匹配都会被拒绝。这是为了防止本地或全局 `node_modules` 中出现的同名替身包被加载。
+
+```bash
+# 一次性安装（请先审计源码，详见下方链接）
+npm install -g wechat-md-publisher@1.0.7
+
+# 验证可用并精确等于 1.0.7
+wechat-pub --version
+```
+
+请审计：
+- CLI 入口：https://github.com/sipingme/wechat-md-publisher/blob/main/src/index.ts
+- 凭证加密：https://github.com/sipingme/wechat-md-publisher/blob/main/src/services/account.ts
+
+> 不要在含有未审计 `node_modules` 的工作目录下运行 Skill。启动器只在受信路径（Node 全局 `node_modules` 与 Skill 自身 `node_modules`）解析包；**当前工作目录（CWD）下的 `node_modules` 已被显式排除**。
+
+## 🚀 快速安装（Skill 本身）
 
 ### 方法 1：从 ClawHub 安装（推荐）
 
@@ -31,7 +52,7 @@ cp -r . ~/.openclaw/skills/wechat-md-publisher/
 
 3. 验证工具可用：
 ```bash
-npx --yes wechat-md-publisher@^1.0.6 --version
+wechat-pub --version
 ```
 
 ## ✅ 验证安装
@@ -44,7 +65,7 @@ openclaw skills list --eligible
 openclaw skills info wechat-md-publisher
 
 # 测试命令
-npx --yes wechat-md-publisher@^1.0.6 --version
+wechat-pub --version
 ```
 
 ## 📋 首次配置
@@ -63,7 +84,7 @@ npx --yes wechat-md-publisher@^1.0.6 --version
 export WECHAT_APP_ID="wx_your_app_id"
 export WECHAT_APP_SECRET="your_app_secret"
 
-npx --yes wechat-md-publisher@^1.0.6 account add \
+wechat-pub account add \
   --name "我的公众号" \
   --default
 ```
@@ -81,7 +102,7 @@ title: 测试文章
 EOF
 
 # 发布
-npx --yes wechat-md-publisher@^1.0.6 publish create --file test.md --theme default
+wechat-pub publish create --file test.md --theme default
 ```
 
 ## 🎯 使用方式
@@ -128,7 +149,7 @@ AI: 正在获取列表...
 openclaw run wechat-md-publisher publish article.md orangeheart
 
 # 或直接使用工具
-npx --yes wechat-md-publisher@^1.0.6 publish create --file article.md --theme orangeheart
+wechat-pub publish create --file article.md --theme orangeheart
 ```
 
 ## � 与 news-to-markdown-skill 组合使用
@@ -144,7 +165,7 @@ convert-url --url "https://www.toutiao.com/article/123" \
   --platform toutiao
 
 # 2. 发布到微信公众号
-npx --yes wechat-md-publisher@^1.0.6 publish create \
+wechat-pub publish create \
   --file /tmp/article.md \
   --theme orangeheart
 ```
@@ -154,10 +175,13 @@ npx --yes wechat-md-publisher@^1.0.6 publish create \
 用户说：
 > "帮我把这篇头条文章转载到我的微信公众号"
 
-AI 自动执行：
+AI 自动执行（**默认走"草稿优先 + 人工确认"路径**）：
 1. 使用 `news-to-markdown-skill` 提取文章
-2. 使用 `wechat-md-publisher-skill` 发布到微信
-3. 返回发布结果
+2. 使用 `wechat-md-publisher-skill` **创建草稿**（`draft create`），并向用户回报标题、主题、图片处理结果
+3. 等待用户明确确认后，再使用 `publish create` / `publish submit` 正式发布
+4. 返回发布结果
+
+> ⚠️ **不要在没有用户明确确认的情况下直接发布**。错误的文章、主题或抓取结果一旦 `publish create` 即对粉丝可见，可能产生公众号违规、品牌或合规风险。AI 应默认创建草稿，由用户在微信公众平台后台或预览中复核后再决定是否发布或删除。
 
 ### 优势
 
@@ -203,13 +227,17 @@ export WECHAT_APP_SECRET="your_app_secret"
 
 ```bash
 # 添加本地主题（推荐）
-npx --yes wechat-md-publisher@^1.0.6 theme add-local --name my-theme --path ./my-theme.css
+wechat-pub theme add-local --name my-theme --path ./my-theme.css
 
 # 添加远程主题 API（⚠️ 见下方安全警告）
-npx --yes wechat-md-publisher@^1.0.6 theme add-remote --name md2wechat --url https://api.md2wechat.cn --key xxx
+wechat-pub theme add-remote --name md2wechat --url https://api.md2wechat.cn --key xxx
 ```
 
-> ⚠️ **远程主题安全警告**：使用 `theme add-remote` 会向第三方服务器发送请求。请仅使用您信任的远程主题 API。远程主题端点不在本 skill 的默认网络权限范围内，需要用户明确配置并承担相应风险。
+> ⚠️ **远程主题安全警告**：
+> - 使用 `theme add-remote` 会把文章正文 / 标题 / 图片 URL 等内容发送到第三方端点，构成一个**新的数据边界**，超出本 Skill 默认（仅微信官方 API）的网络权限范围。
+> - 默认请使用内置主题（`default` / `orangesun` / `redruby` / `greenmint` / `purplerain` / `blackink`）或本地 CSS 主题（`theme add-local`），无需任何外发请求。
+> - 仅在你完全信任并已审计目标主题服务的隐私与安全策略时再使用 `theme add-remote`；不要把生产公众号的文章正文发送给来源不明的渲染服务。
+> - AI 自动化场景下，不应自动启用远程主题；必须由用户明确配置并承担风险。
 
 ## ⚠️ 常见问题
 
@@ -230,31 +258,35 @@ chmod +x ~/.openclaw/skills/wechat-md-publisher/scripts/publish.js
 
 ### 问题 3：找不到命令
 
-**解决**：
+**解决**：确认底层 npm 包已用**精确版本**全局安装：
 ```bash
-# 本 Skill 使用 npx 动态执行，无需全局安装
-npx --yes wechat-md-publisher@^1.0.6 --version
+npm install -g wechat-md-publisher@1.0.7
+wechat-pub --version
 ```
 
 ### 问题 4：Token 过期
 
 Token 会自动刷新，如仍有问题：
 ```bash
-npx --yes wechat-md-publisher@^1.0.6 account remove <account-id>
-npx --yes wechat-md-publisher@^1.0.6 account add --name "新账号" --default
+wechat-pub account remove <account-id>
+wechat-pub account add --name "新账号" --default
 ```
 
-### 问题 5：更新 Skill 后依赖未更新
+### 问题 5：升级到新版本
 
-本 Skill 使用 `npx` 动态执行，会自动拉取指定版本的包。如需清除缓存：
+本 Skill 不会自动升级底层包。**升级流程必须显式**：
+
+1. 重新审计上游变更（CLI 入口与 `account.ts` 凭证加密）。
+2. 在 `config.json` 与 `scripts/run.js` 中将 `REQUIRED_VERSION` 显式改为新的精确版本号（不要使用 caret/range/`@latest`）。
+3. 在受信主机上执行精确安装并验证：
 
 ```bash
-# 清除 npx 缓存
-npm cache clean --force
-
-# 验证版本
-npx --yes wechat-md-publisher@^1.0.6 --version
+# 将 <NEW_VERSION> 替换为新审计通过的版本号
+npm install -g wechat-md-publisher@<NEW_VERSION>
+wechat-pub --version
 ```
+
+> 启动器会在 `import` 前比对 `manifest.version` 与 `REQUIRED_VERSION`；如果两者不一致，调用会被拒绝。这是有意为之，避免静默吞下未经审计的新版本。
 
 ## 🔒 安全性
 
@@ -265,12 +297,15 @@ npx --yes wechat-md-publisher@^1.0.6 --version
 - ✅ 写入配置文件到 `~/.config/wechat-md-publisher-nodejs/`
 - ⚠️ 可选：远程主题 API（仅当用户使用 `theme add-remote` 时）
 
-### 数据隐私
+### 数据隐私与最佳实践
 
-- ✅ 默认情况下，所有通信仅限于微信官方 API
-- ✅ 配置文件仅存储在本地（凭证加密由 [wechat-md-publisher](https://github.com/sipingme/wechat-md-publisher) npm 包处理）
-- ❌ 不会自动收集用户信息
-- ⚠️ **例外**：如果用户配置了远程主题（`theme add-remote`），会向该第三方端点发送请求
+- ✅ 默认情况下，所有通信仅限于微信官方 API（`api.weixin.qq.com` / `mp.weixin.qq.com`）。
+- ✅ 配置与凭证存储在本地 `~/.config/wechat-md-publisher-nodejs/`；凭证加密由 [wechat-md-publisher](https://github.com/sipingme/wechat-md-publisher) npm 包处理（请审计 `src/services/account.ts` 后再写入真实 `AppSecret`）。
+- ✅ **推荐使用环境变量** 传递 `WECHAT_APP_ID` / `WECHAT_APP_SECRET`，避免凭证出现在 `ps` 进程列表、shell history、CI 日志中。
+- ✅ **推荐使用最小权限或测试公众号**，先验证流程后再切换到生产账号。
+- ✅ **AI 自动发布默认走草稿路径**：让 AI 调用 `draft create`，由人工在公众平台预览/确认后再决定 `publish create` 或 `publish submit`。
+- ❌ 本 Skill 不会自动收集用户信息或回传任何文章内容。
+- ⚠️ **例外**：如果用户主动配置了远程主题（`theme add-remote`），会把文章正文发送到该第三方端点。请见上文"远程主题安全警告"。
 
 ### 安全检查
 

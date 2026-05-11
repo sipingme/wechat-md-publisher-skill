@@ -201,15 +201,17 @@ wechat-pub account list
 **方案 1：使用云服务器（推荐）**
 ```bash
 # 1. 购买云服务器（最低配置即可）
-# 2. 在云服务器上安装工具
+# 2. 在云服务器上安装工具（必须使用精确版本；启动器会校验）
 ssh user@your-server-ip
-npm install -g wechat-md-publisher
+npm install -g wechat-md-publisher@1.0.7
 
-# 3. 配置账号
-wechat-pub account add --name "公众号" --app-id xxx --app-secret xxx
+# 3. 推荐通过环境变量提供凭证（避免命令行暴露 AppSecret）
+export WECHAT_APP_ID="wx_your_app_id"
+export WECHAT_APP_SECRET="your_app_secret"
+wechat-pub account add --name "公众号" --default
 
-# 4. 使用
-wechat-pub publish create --file article.md --theme default
+# 4. 使用：建议先创建草稿，人工确认后再 publish
+wechat-pub draft create --file article.md --theme default
 ```
 
 **方案 2：申请固定 IP**

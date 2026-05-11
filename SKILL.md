@@ -1,7 +1,7 @@
 ---
 name: wechat-md-publisher
 description: 发布 Markdown 文章到微信公众号，支持草稿管理、多主题、智能图片处理、自动封面图。推荐与 news-to-markdown-skill 配合使用实现一键转载（支持本地图片）。
-version: 1.0.7
+version: 1.0.8
 author: Ping Si <sipingme@gmail.com>
 user-invocable: true
 requires:
@@ -11,17 +11,33 @@ requires:
     - name: npm
       version: ">=8.0.0"
 install:
-  type: npx
+  type: npm-global
   package: wechat-md-publisher
-  version: "^1.0.7"
-  execution: "npx --yes wechat-md-publisher@^1.0.7"
-  riskLevel: moderate
-  riskReason: "通过 npx 动态拉取并执行第三方 npm 包，存在供应链风险。使用前请审计源码。"
+  version: "1.0.7"
+  versionPinning: exact
+  execution: "npm install -g wechat-md-publisher@1.0.7"
+  global: true
+  autoInstall: false
+  autoUpdate: false
+  riskLevel: low
+  riskReason: |
+    启动器以 in-process 动态 import 调用本机已安装的 wechat-md-publisher，
+    并在 import 之前校验 manifest.name 与 manifest.version 是否精确等于内置 pin。
+    解析路径仅包含 Node 全局 node_modules 与 Skill 自身 node_modules；
+    当前工作目录 (CWD) 下的 node_modules 已被显式排除，避免被未审计的本地包替身劫持。
+    安装前请审计上游源码与凭证加密实现。
+  trustedResolutionRoots:
+    - "<node-prefix>/lib/node_modules"
+    - "<node-prefix>/node_modules (Windows)"
+    - "<skill-dir>/node_modules"
+  untrustedResolutionRoots:
+    - "process.cwd()/node_modules (intentionally excluded)"
   source:
     registry: https://registry.npmjs.org
     repository: https://github.com/sipingme/wechat-md-publisher
     license: Apache-2.0
     audit: https://github.com/sipingme/wechat-md-publisher/blob/main/src/index.ts
+    auditCredentials: https://github.com/sipingme/wechat-md-publisher/blob/main/src/services/account.ts
 env:
   optional:
     - name: WECHAT_APP_ID
@@ -92,15 +108,30 @@ repository: https://github.com/sipingme/wechat-md-publisher
 
 ## ⚡ 快速开始
 
-### ⚠️ 安全风险提示
+### ⚠️ 安全风险与审计要点
 
-**供应链风险**：本 Skill 通过 `npx` 动态拉取并执行第三方 npm 包 `wechat-md-publisher`。使用前请审计源码：
-- **源码仓库**: https://github.com/sipingme/wechat-md-publisher
-- **审计入口**: https://github.com/sipingme/wechat-md-publisher/blob/main/src/index.ts
+**安装与执行模型（请先阅读）**：
+- 本 Skill 的启动器 (`scripts/run.js`) 不会执行任何子进程，也不会通过 `npx` 在运行时从 registry 拉取代码。
+- 启动器使用 in-process 动态 `import` 调用 **本机已经全局安装** 的 `wechat-md-publisher` 包。
+- 因此，安装步骤是显式的、**必须使用精确版本**：`npm install -g wechat-md-publisher@1.0.7`。
+- 启动器在 `import` 之前会读取已解析包的 `package.json`，**校验 `name` 与 `version` 精确等于内置 pin**；任何不匹配（含同名替身、未审计的新版本）都会被拒绝。
+- 解析路径限定为 Node 全局 `node_modules` 与 Skill 自身 `node_modules`；**CWD 下的 `node_modules` 已被显式排除**，避免从含未审计依赖的工作目录启动时被恶意本地包劫持。
+- 这样可以让用户在安装前完整审计上游源码、签名与版本，避免 "每次运行都从 npm 拉新代码" 的供应链风险面。
 
-**凭证存储**：账号凭证存储在 `~/.config/wechat-md-publisher-nodejs/`，使用 AES-256 加密。
+**必须审计的上游代码**（首次安装前）：
+- **CLI 入口与命令分发**: https://github.com/sipingme/wechat-md-publisher/blob/main/src/index.ts
+- **账号 / 凭证加密实现**: https://github.com/sipingme/wechat-md-publisher/blob/main/src/services/account.ts
+- 重点关注：AES-256 是否使用 AEAD 模式（如 AES-GCM / AES-CBC + HMAC）、密钥派生方式、是否绑定到当前用户、加密文件权限。
 
-**远程主题风险**：如果使用 `theme add-remote` 添加远程主题，第三方端点可能接收文章内容。请只使用可信任的主题源。
+**凭证存储**：账号凭证存储在 `~/.config/wechat-md-publisher-nodejs/`，使用 AES-256 加密。本 skill 不直接处理加密，安全性依赖上游 npm 包的实现 —— 必须在审计上述 `account.ts` 之后再写入真实凭证。
+
+**凭证传递的最佳实践**：
+- 推荐使用环境变量 `WECHAT_APP_ID` / `WECHAT_APP_SECRET`，避免 `--app-secret` 出现在 `ps` 进程列表中。
+- 任何时候在 shell history、CI 日志、容器元数据中暴露 `AppSecret`，都应立即去微信公众平台重置。
+
+**远程主题风险**：如果使用 `theme add-remote` 添加远程主题，第三方端点可能接收文章正文 / 标题。请只使用受信任的主题源；本 Skill 默认网络白名单**不包含**任意第三方主题端点。
+
+**沙箱建议**：若你无法或不愿审计上游 npm 包，请在隔离环境（专用 VM / 容器 / 沙箱账号）中运行；不要把生产微信公众号的 AppSecret 直接交给未审计的工具链。
 
 ### 配置账号
 
@@ -112,7 +143,7 @@ export WECHAT_APP_ID="wx_your_app_id"
 export WECHAT_APP_SECRET="your_app_secret"
 
 # 添加账号
-npx --yes wechat-md-publisher@^1.0.7 account add \
+wechat-pub account add \
   --name "我的公众号" \
   --default
 ```
@@ -121,7 +152,7 @@ npx --yes wechat-md-publisher@^1.0.7 account add \
 
 ```bash
 # ⚠️ 警告：--app-secret 会出现在 ps 进程列表中
-npx --yes wechat-md-publisher@^1.0.7 account add \
+wechat-pub account add \
   --name "我的公众号" \
   --app-id "wx_your_app_id" \
   --app-secret "your_app_secret" \
@@ -131,7 +162,7 @@ npx --yes wechat-md-publisher@^1.0.7 account add \
 ### 发布文章
 
 ```bash
-npx --yes wechat-md-publisher@^1.0.7 publish create \
+wechat-pub publish create \
   --file article.md \
   --theme orangesun
 ```
@@ -147,7 +178,7 @@ convert-url --url "https://www.toutiao.com/article/123" \
   --output-dir /tmp/article
 
 # wechat-md-publisher 会自动读取本地图片并上传
-npx --yes wechat-md-publisher@^1.0.7 publish create --file /tmp/article/article.md --theme orangesun
+wechat-pub publish create --file /tmp/article/article.md --theme orangesun
 ```
 
 **图片处理最佳实践**（v0.8.3+）：
@@ -206,16 +237,41 @@ npx --yes wechat-md-publisher@^1.0.7 publish create --file /tmp/article/article.
    - 在「IP白名单」中添加该 IP
    - 详细指南：[IP 白名单配置指南](./references/ip-whitelist-guide.md)
 
-### 3. 使用方式
+### 3. 安装方式
 
-本 Skill 通过 `npx` 动态执行，无需全局安装：
+本 Skill 要求在首次使用前**显式全局安装**底层 npm 包，以便用户审计源码并避免运行时从 registry 拉代码：
 
 ```bash
+# 一次性安装（请先阅读上文 "安全风险与审计要点" 完成审计；必须使用精确版本）
+npm install -g wechat-md-publisher@1.0.7
+
+# 验证可用且版本精确等于 1.0.7
+wechat-pub --version
+
 # 查看帮助
-npx --yes wechat-md-publisher@^1.0.7 --help
+wechat-pub --help
 ```
 
+> ⚠️ 不要在含有未审计 `node_modules` 的工作目录下运行 Skill。启动器只在受信路径解析包；CWD 下的 `node_modules` 已被显式排除。
+
+安装完成后，Skill 启动器（`scripts/run.js`）会通过 in-process 动态 `import` 调用本机已安装的 `wechat-md-publisher`，不再触发任何 `npx` 网络请求或子进程。
+
 ## 🚀 标准操作流程 (SOP)
+
+### ⚠️ AI 自动化必须遵守：草稿优先 + 人工确认
+
+`publish create` 与 `publish submit` 会让文章对公众号粉丝**立即可见**。错误的标题、抓取错误的正文、未压缩的图片，或被远程主题污染的渲染，一旦发布即对外暴露，可能造成公众号违规、品牌或合规风险。
+
+因此当此 Skill 在 AI / 自动化流程中被调用时，**默认行为**必须是：
+
+1. 调用 `draft create`（不是 `publish create`），把内容创建为草稿。
+2. 向用户回报：标题、所用主题、首图/封面来源、图片是否已上传到微信素材库。
+3. 等待用户在微信公众平台后台或预览中**明确确认**后，再调用 `publish create` 或 `publish submit`。
+4. 任何 `delete`、`wrapper set`、`account add` 等会改变线上或本地状态的操作，同样要求用户明确确认。
+
+直接 `publish create` 仅在用户**显式要求"立即发布"**且 AI 已经完整复述（标题/主题/正文要点/图片）并获得"确认发布"回复后才允许执行。
+
+---
 
 ### 操作 1：配置微信公众号账号
 
@@ -227,7 +283,7 @@ npx --yes wechat-md-publisher@^1.0.7 --help
 2. 执行命令添加账号：
 
 ```bash
-npx --yes wechat-md-publisher@^1.0.7 account add \
+wechat-pub account add \
   --name "账号名称" \
   --app-id "wx_your_app_id" \
   --app-secret "your_app_secret" \
@@ -237,7 +293,7 @@ npx --yes wechat-md-publisher@^1.0.7 account add \
 3. 验证账号添加成功：
 
 ```bash
-npx --yes wechat-md-publisher@^1.0.7 account list
+wechat-pub account list
 ```
 
 **输出示例**：
@@ -258,7 +314,7 @@ npx --yes wechat-md-publisher@^1.0.7 account list
 
 ### 操作 2：创建并发布文章（一步到位）
 
-**场景**：用户提供 Markdown 内容，直接发布到公众号
+**场景**：用户提供 Markdown 内容，并**已明确要求立即发布**到公众号（如果未明确要求，请走"操作 3：创建草稿"）
 
 **步骤**：
 
@@ -280,7 +336,7 @@ EOF
 2. 执行发布命令：
 
 ```bash
-npx --yes wechat-md-publisher@^1.0.7 publish create \
+wechat-pub publish create \
   --file /tmp/article.md \
   --theme orangesun
 ```
@@ -324,7 +380,7 @@ npx --yes wechat-md-publisher@^1.0.7 publish create \
 2. 执行草稿创建命令：
 
 ```bash
-npx --yes wechat-md-publisher@^1.0.7 draft create \
+wechat-pub draft create \
   --file /tmp/article.md \
   --theme default
 ```
@@ -342,7 +398,7 @@ Media ID: 3_abcdefghijk123456
 
 **后续操作**：
 - 用户可以在微信公众平台编辑草稿
-- 需要发布时，使用 `npx --yes wechat-md-publisher@^1.0.7 publish submit <media-id>`
+- 需要发布时，使用 `wechat-pub publish submit <media-id>`
 
 ---
 
@@ -353,7 +409,7 @@ Media ID: 3_abcdefghijk123456
 **命令**：
 
 ```bash
-npx --yes wechat-md-publisher@^1.0.7 draft list --page 1 --size 10
+wechat-pub draft list --page 1 --size 10
 ```
 
 **输出示例**：
@@ -377,7 +433,7 @@ npx --yes wechat-md-publisher@^1.0.7 draft list --page 1 --size 10
 **命令**：
 
 ```bash
-npx --yes wechat-md-publisher@^1.0.7 publish list --page 1 --size 10
+wechat-pub publish list --page 1 --size 10
 ```
 
 **输出示例**：
@@ -398,13 +454,13 @@ npx --yes wechat-md-publisher@^1.0.7 publish list --page 1 --size 10
 **删除草稿**：
 
 ```bash
-npx --yes wechat-md-publisher@^1.0.7 draft delete <media-id>
+wechat-pub draft delete <media-id>
 ```
 
 **删除已发布文章**：
 
 ```bash
-npx --yes wechat-md-publisher@^1.0.7 publish delete <article-id>
+wechat-pub publish delete <article-id>
 ```
 
 ---
@@ -414,7 +470,7 @@ npx --yes wechat-md-publisher@^1.0.7 publish delete <article-id>
 **命令**：
 
 ```bash
-npx --yes wechat-md-publisher@^1.0.7 theme list
+wechat-pub theme list
 ```
 
 **输出示例**：
@@ -444,34 +500,34 @@ npx --yes wechat-md-publisher@^1.0.7 theme list
 
 **开启功能**：
 ```bash
-npx --yes wechat-md-publisher@^1.0.7 wrapper on
+wechat-pub wrapper on
 ```
 
 **设置内容**：
 ```bash
-npx --yes wechat-md-publisher@^1.0.7 wrapper set \
+wechat-pub wrapper set \
   --header "<div>欢迎关注我们的公众号</div>" \
   --footer "<div>觉得有帮助请点赞+收藏</div>"
 ```
 
 **查看状态**：
 ```bash
-npx --yes wechat-md-publisher@^1.0.7 wrapper status
+wechat-pub wrapper status
 ```
 
 **查看历史版本**：
 ```bash
-npx --yes wechat-md-publisher@^1.0.7 wrapper history
+wechat-pub wrapper history
 ```
 
 **回滚到指定版本**：
 ```bash
-npx --yes wechat-md-publisher@^1.0.7 wrapper rollback 1
+wechat-pub wrapper rollback 1
 ```
 
 **关闭功能**：
 ```bash
-npx --yes wechat-md-publisher@^1.0.7 wrapper off
+wechat-pub wrapper off
 ```
 
 **注意事项**：
@@ -507,7 +563,7 @@ async function publishArticle(markdown, theme) {
 ```bash
 # 批量创建草稿
 for file in articles/*.md; do
-    npx --yes wechat-md-publisher@^1.0.7 draft create --file "$file" --theme default
+    wechat-pub draft create --file "$file" --theme default
 done
 ```
 
@@ -586,7 +642,7 @@ cover: ./cover.jpg（可选，封面图路径）
 
 **症状**：提示"主题不存在"
 
-**解决**：使用 `npx --yes wechat-md-publisher@^1.0.7 theme list` 查看可用主题
+**解决**：使用 `wechat-pub theme list` 查看可用主题
 
 ### 问题 4：权限不足
 
@@ -616,11 +672,14 @@ cover: ./cover.jpg（可选，封面图路径）
 - 网络访问（微信 API）
 - 写入配置文件
 
-### 数据隐私
+### 数据隐私与运维要点
 
-- 不会上传任何数据到第三方服务器
-- 所有通信仅限于微信官方 API
-- 图片缓存仅在本地
+- ✅ 默认不会上传任何数据到第三方服务器；所有通信仅限于微信官方 API（`api.weixin.qq.com` / `mp.weixin.qq.com`）。
+- ✅ 图片缓存仅在本地。
+- ✅ 建议把 `~/.config/wechat-md-publisher-nodejs/` 权限设为 `0700`，并排除在备份/容器镜像/同步盘之外。
+- ✅ 使用环境变量（`WECHAT_APP_ID` / `WECHAT_APP_SECRET`）而非 `--app-secret` 命令行参数，避免出现在 `ps`、shell history、CI 日志中。
+- ✅ 优先使用最小权限或测试公众号验证流程后再切到生产账号；如怀疑泄露，立即在公众平台重置 `AppSecret` 并删除本地缓存目录。
+- ⚠️ 例外：如果用户主动启用 `theme add-remote`，会把文章正文 / 标题 / 图片 URL 发送到该第三方端点，构成新的数据边界，请仅使用受信任的主题源；AI 自动化流程不应在未经用户授权的情况下启用远程主题。
 
 ---
 
@@ -652,9 +711,16 @@ cover: ./cover.jpg（可选，封面图路径）
 
 ## 📝 维护说明
 
-- **版本**: 1.0.7
-- **最后更新**: 2026-04-26
-- **更新内容**: 
+- **版本**: 1.0.8
+- **最后更新**: 2026-05-11
+- **更新内容（1.0.8 — 安全加固版）**:
+  - **供应链加固**：启动器 (`scripts/run.js`) 在 `import` 之前读取已解析包的 `package.json`，**校验 `name` 与 `version` 精确等于内置 pin（当前 `1.0.7`）**，否则拒绝加载。可阻止同名替身包 / 未审计的新版本静默接管 WeChat 凭证。
+  - **关闭 CWD 解析后门**：包解析路径**显式排除 `process.cwd()/node_modules`**，只在 Node 全局 `node_modules` 与 Skill 自身 `node_modules` 中解析；从含未审计依赖的目录启动 Skill 不再可能被恶意本地包劫持。
+  - **精确版本钉死**：所有安装命令与依赖元数据从 `^1.0.7` / 未版本化的 `npm install` 改为 `wechat-md-publisher@1.0.7`（含 `references/quick-start.md`、`ip-whitelist-guide.md`）。
+  - **草稿优先 SOP**：新增 "AI 自动化必须遵守：草稿优先 + 人工确认" 章节；`config.json` 标记 `permissions.publishing.autoPublishWithoutConfirmation: false`，明确 AI 默认走 `draft create` + 人工确认路径。
+  - **凭证最佳实践**：补充环境变量优先、`~/.config/wechat-md-publisher-nodejs/` 目录权限收紧、最小权限/测试公众号、泄露应急流程。
+  - **远程主题数据边界**：强化 `theme add-remote` 警告 — 内置/本地主题为默认，AI 不应在未授权情况下启用远程主题。
+- **更新内容（1.0.7）**:
   - 明确内置主题为 6 个自定义主题（default, blackink, orangesun, redruby, greenmint, purplerain）
   - 移除历史遗留的 wenyan-core 主题注册（lapis, maize 等），避免加载不存在的主题
   - 更新 THEMES.md 文档与实际可用主题保持一致
@@ -667,10 +733,10 @@ cover: ./cover.jpg（可选，封面图路径）
 
 新用户应该能在 5 分钟内完成：
 
-- [ ] 验证工具可用：`npx --yes wechat-md-publisher@^1.0.7 --version`
-- [ ] 配置账号：`npx --yes wechat-md-publisher@^1.0.7 account add ...`
+- [ ] 验证工具可用：`wechat-pub --version`
+- [ ] 配置账号：`wechat-pub account add ...`
 - [ ] 创建测试文章
-- [ ] 发布成功：`npx --yes wechat-md-publisher@^1.0.7 publish create --file test.md --theme default`
+- [ ] 发布成功：`wechat-pub publish create --file test.md --theme default`
 - [ ] 在微信公众平台看到文章
 
 如果以上步骤都能顺利完成，说明 Skill 已正确配置！
@@ -700,7 +766,7 @@ convert-url --url "https://www.toutiao.com/article/123" \
   --verbose
 
 # 步骤 2: 使用 wechat-md-publisher 发布到微信
-npx --yes wechat-md-publisher@^1.0.7 publish create \
+wechat-pub publish create \
   --file /tmp/article/article.md \
   --theme orangesun
 ```
@@ -732,7 +798,7 @@ for i in "${!urls[@]}"; do
     --output-dir "$output_dir"
   
   # 发布到微信（创建草稿）
-  npx --yes wechat-md-publisher@^1.0.7 draft create \
+  wechat-pub draft create \
     --file "$output_dir/article.md" \
     --theme default
   
@@ -778,10 +844,10 @@ AI 执行流程：
 ```bash
 # 先创建草稿，人工审核后再发布
 convert-url --url "$news_url" --output /tmp/article.md
-npx --yes wechat-md-publisher@^1.0.7 draft create --file /tmp/article.md --theme default
+wechat-pub draft create --file /tmp/article.md --theme default
 
 # 审核通过后发布
-npx --yes wechat-md-publisher@^1.0.7 publish submit <media-id>
+wechat-pub publish submit <media-id>
 ```
 
 **2. 添加来源声明**

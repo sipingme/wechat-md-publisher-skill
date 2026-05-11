@@ -4,8 +4,16 @@
 
 ### 步骤 1：安装工具（1 分钟）
 
+> ⚠️ **必须使用精确版本**。Skill 启动器在加载前会校验 `package.json` 的 `name` 与 `version`，任何不匹配都会被拒绝。请勿使用 `@latest` 或浮动范围。
+
 ```bash
-npm install -g wechat-md-publisher
+# 安装前请先审计上游源码（CLI 与凭证加密）：
+#   - https://github.com/sipingme/wechat-md-publisher/blob/main/src/index.ts
+#   - https://github.com/sipingme/wechat-md-publisher/blob/main/src/services/account.ts
+npm install -g wechat-md-publisher@1.0.7
+
+# 验证版本（必须精确等于 1.0.7）
+wechat-pub --version
 ```
 
 ### 步骤 2：配置账号（2 分钟）
@@ -48,7 +56,13 @@ EOF
 
 ### 步骤 4：发布文章（1 分钟）
 
+> 💡 **推荐先创建草稿，人工确认后再发布**。直接 `publish create` 会立即让文章对公众号粉丝可见，请在 AI / 自动化流程中默认走草稿路径。
+
 ```bash
+# 推荐：先创建草稿（不会公开发布）
+wechat-pub draft create --file test-article.md --theme orangeheart
+
+# 仅在你已经审阅过渲染结果与图片后，再正式发布
 wechat-pub publish create --file test-article.md --theme orangeheart
 ```
 
